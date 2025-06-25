@@ -20,3 +20,32 @@ Aplicación web para organizar tu tiempo durante vacaciones, priorizando activid
 ## 🚀 Cómo Usar
 
 1. **Accede a la aplicación**:
+
+
+2. **Navega entre días** usando el selector superior
+
+3. **Personaliza actividades** editando el archivo `schedule-data.js`
+
+4. **Configura recordatorios** en tu calendario favorito
+
+## 🛠️ Personalización
+
+Edita estos archivos para adaptar a tus necesidades:
+
+| Archivo | Propósito |
+|---------|-----------|
+| `index.html` | Estructura principal |
+| `style.css` | Apariencia visual |
+| `app.js` | Lógica interactiva |
+| `schedule-data.js` | Contenido del horario |
+
+Ejemplo de modificación de actividad:
+```javascript
+// En schedule-data.js
+{
+time: "17:00 - 18:00",
+activity: "Tiempo Guitarra",
+description: "Practica escalas y nuevas canciones",
+icon: "fas fa-guitar",
+category: "music"
+}
