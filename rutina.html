@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rutina de Entrenamiento Semanal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 20px;
+            color: white;
+            animation: fadeIn 1s ease;
+        }
+        
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            max-width: 900px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        .week-structure {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: slideUp 0.8s ease;
+        }
+        
+        .week-structure h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .week-structure h2 i {
+            font-size: 2rem;
+        }
+        
+        .week-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .day-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border-left: 5px solid #667eea;
+        }
+        
+        .day-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .day-card.workout {
+            border-left-color: #e74c3c;
+            background: linear-gradient(135deg, #fff5f5 0%, #ffe5e5 100%);
+        }
+        
+        .day-card.rest {
+            border-left-color: #2ecc71;
+            background: linear-gradient(135deg, #f0fff4 0%, #dcffe4 100%);
+        }
+        
+        .day-card h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+        
+        .day-card p {
+            color: #7f8c8d;
+            font-size: 0.95rem;
+        }
+        
+        .day-selector {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+        
+        .day-btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #667eea;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 1rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .day-btn:hover, .day-btn.active {
+            background: white;
+            color: #764ba2;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .workout-details {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: slideUp 0.8s ease;
+            display: none;
+        }
+        
+        .workout-details.active {
+            display: block;
+        }
+        
+        .workout-details h2 {
+            color: #667eea;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 2rem;
+        }
+        
+        .exercise-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .exercise-table thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .exercise-table th {
+            padding: 18px 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        
+        .exercise-table td {
+            padding: 15px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        .exercise-table tbody tr:hover {
+            background: #f8f9fa;
+            transition: background 0.3s ease;
+        }
+        
+        .exercise-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .exercise-name {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .rest-day {
+            text-align: center;
+            padding: 60px 20px;
+            color: #7f8c8d;
+        }
+        
+        .rest-day i {
+            font-size: 4rem;
+            color: #2ecc71;
+            margin-bottom: 20px;
+        }
+        
+        .rest-day h3 {
+            font-size: 2rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        footer {
+            text-align: center;
+            color: white;
+            padding: 30px 0;
+            margin-top: 40px;
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .day-btn {
+                padding: 12px 20px;
+                font-size: 0.9rem;
+            }
+            
+            .exercise-table {
+                font-size: 0.9rem;
+            }
+            
+            .exercise-table th,
+            .exercise-table td {
+                padding: 10px 8px;
+            }
+            
+            .week-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-dumbbell"></i> Rutina de Entrenamiento Semanal</h1>
+            <p>División de 4 días de entrenamiento para trabajar cada grupo muscular con suficiente intensidad y tiempo para la recuperación</p>
+        </header>
+        
+        <div class="week-structure">
+            <h2><i class="fas fa-calendar-week"></i> Estructura de la Rutina Semanal</h2>
+            <div class="week-grid">
+                <div class="day-card workout" data-day="lunes">
+                    <h3>Lunes</h3>
+                    <p><i class="fas fa-fire"></i> Pecho y Tríceps</p>
+                </div>
+                <div class="day-card workout" data-day="martes">
+                    <h3>Martes</h3>
+                    <p><i class="fas fa-fire"></i> Espalda y Bíceps</p>
+                </div>
+                <div class="day-card rest" data-day="miercoles">
+                    <h3>Miércoles</h3>
+                    <p><i class="fas fa-bed"></i> Descanso</p>
+                </div>
+                <div class="day-card workout" data-day="jueves">
+                    <h3>Jueves</h3>
+                    <p><i class="fas fa-fire"></i> Piernas</p>
+                </div>
+                <div class="day-card workout" data-day="viernes">
+                    <h3>Viernes</h3>
+                    <p><i class="fas fa-fire"></i> Hombros y Abdominales</p>
+                </div>
+                <div class="day-card rest" data-day="sabado">
+                    <h3>Sábado</h3>
+                    <p><i class="fas fa-bed"></i> Descanso</p>
+                </div>
+                <div class="day-card rest" data-day="domingo">
+                    <h3>Domingo</h3>
+                    <p><i class="fas fa-bed"></i> Descanso</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="day-selector">
+            <button class="day-btn active" data-day="lunes">Lunes - Pecho y Tríceps</button>
+            <button class="day-btn" data-day="martes">Martes - Espalda y Bíceps</button>
+            <button class="day-btn" data-day="jueves">Jueves - Piernas</button>
+            <button class="day-btn" data-day="viernes">Viernes - Hombros y Abdominales</button>
+        </div>
+        
+        <!-- Día 1: Pecho y Tríceps -->
+        <div class="workout-details active" id="lunes">
+            <h2><i class="fas fa-fire"></i> Día 1: Pecho y Tríceps</h2>
+            <table class="exercise-table">
+                <thead>
+                    <tr>
+                        <th>Ejercicio</th>
+                        <th>Series</th>
+                        <th>Repeticiones</th>
+                        <th>Descanso entre series</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="exercise-name">Press de banca con barra</td>
+                        <td>3</td>
+                        <td>8-12</td>
+                        <td>60-90 segundos</td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Press inclinado con mancuernas</td>
+                        <td>3</td>
+                        <td>8-12</td>
+                        <td>60-90 segundos</td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Aperturas con mancuernas</td>
+                        <td>3</td>
+                        <td>10-15</td>
+                        <td>60 segundos</td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Fondos en paralelas (o en máquina)</td>
+                        <td>3</td>
+                        <td>Hasta el fallo</td>
+                        <td>60-90 segundos</td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Extensión de tríceps en polea alta</td>
+                        <td>3</td>
+                        <td>10-15</td>
+                        <td>60 segundos</td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Press francés con barra Z</td>
+                        <td>3</td>
+                        <td>8-12</td>
+                        <td>60-90 segundos</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Día 2: Espalda y Bíceps -->
+        <div class="workout-details" id="martes">
+            <h2><i class="fas fa-fire"></i> Día 2: Espalda y Bíceps</h2>
+            <table class="exercise-table">
+                <thead>
+                    <tr>
+                        <th>Ejercicio</th>
+                        <th>Series</th>
+                        <th>Repeticiones</th>
+                        <th>Descanso entre series</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="exercise-name">Dominadas (con o sin asistencia)</td>
+                        <td>3</td>
+                        <td>Hasta el fallo</td>
+                        <td>60-90 segundos</td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Remo con barra</td>
+                        <td>3</td>
+                        <td>8-12</td>
+                        <td>60-90 segundos</td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Jalón al pecho en polea</td>
+                        <td>3</td>
+                        <td>10-15</td>
+                        <td>60 segundos</td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Peso muerto (con técnica perfecta)</td>
+                        <td>3</td>
+                        <td>6-8</td>
+                        <td>90-120 segundos</td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Curl de bíceps con barra</td>
+                        <td>3</td>
+                        <td>8-12</td>
+                        <td>60 segundos</td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Curl de bíceps alterno con mancuernas</td>
+                        <td>3</td>
+                        <td>10-15 (por brazo)</td>
+                        <td>60 segundos</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Día 3: Piernas -->
+        <div class="workout-details" id="jueves">
+            <h2><i class="fas fa-fire"></i> Día 3: Piernas</h2>
+            <table class="exercise-table">
+                <thead>
+                    <tr>
+                        <th>Ejercicio</th>
+                        <th>Series</th>
+                        <th>Repeticiones</th>
+                        <th>Descanso entre series</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="exercise-name">Sentadillas con barra</td>
+                        <td>3</td>
+                        <td>8-12</td>
+                        <td>90-120 segundos</td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Prensa de piernas</td>
+                        <td>3</td>
+                        <td>10-15</td>
+                        <td>60-90 segundos</td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Zancadas con mancuernas</td>
+                        <td>3</td>
+                        <td>10-12 (por pierna)</td>
+                        <td>60 segundos</td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Curl femoral tumbado</td>
+                        <td>3</td>
+                        <td>10-15</td>
+                        <td>60 segundos</td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Extensión de cuádriceps en máquina</td>
+                        <td>3</td>
+                        <td>10-15</td>
+                        <td>60 segundos</td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Elevación de talones (de pie o en máquina)</td>
+                        <td>4</td>
+                        <td>15-20</td>
+                        <td>45-60 segundos</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Día 4: Hombros y Abdominales -->
+        <div class="workout-details" id="viernes">
+            <h2><i class="fas fa-fire"></i> Día 4: Hombros y Abdominales</h2>
+            <table class="exercise-table">
+                <thead>
+                    <tr>
+                        <th>Ejercicio</th>
+                        <th>Series</th>
+                        <th>Repeticiones</th>
+                        <th>Descanso entre series</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="exercise-name">Press militar con barra (de pie o sentado)</td>
+                        <td>3</td>
+                        <td>8-12</td>
+                        <td>60-90 segundos</td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Elevaciones laterales con mancuernas</td>
+                        <td>3</td>
+                        <td>10-15</td>
+                        <td>60 segundos</td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Elevaciones frontales con mancuernas</td>
+                        <td>3</td>
+                        <td>10-15</td>
+                        <td>60 segundos</td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Encogimientos de hombros con mancuernas</td>
+                        <td>3</td>
+                        <td>12-15</td>
+                        <td>60 segundos</td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Plancha abdominal</td>
+                        <td>3</td>
+                        <td>Mantener el mayor tiempo posible</td>
+                        <td>60 segundos</td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Elevación de piernas colgado</td>
+                        <td>3</td>
+                        <td>10-15</td>
+                        <td>60 segundos</td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Crunches en polea alta</td>
+                        <td>3</td>
+                        <td>15-20</td>
+                        <td>60 segundos</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Días de Descanso -->
+        <div class="workout-details" id="miercoles">
+            <div class="rest-day">
+                <i class="fas fa-spa"></i>
+                <h3>Día de Descanso</h3>
+                <p>Permite que tus músculos se recuperen y crezcan. Mantente activo con caminatas ligeras o estiramientos.</p>
+            </div>
+        </div>
+        
+        <div class="workout-details" id="sabado">
+            <div class="rest-day">
+                <i class="fas fa-spa"></i>
+                <h3>Día de Descanso</h3>
+                <p>Permite que tus músculos se recuperen y crezcan. Mantente activo con caminatas ligeras o estiramientos.</p>
+            </div>
+        </div>
+        
+        <div class="workout-details" id="domingo">
+            <div class="rest-day">
+                <i class="fas fa-spa"></i>
+                <h3>Día de Descanso</h3>
+                <p>Permite que tus músculos se recuperen y crezcan. Mantente activo con caminatas ligeras o estiramientos.</p>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Rutina de entrenamiento semanal - Diseñada para maximizar resultados con recuperación adecuada</p>
+            <p>Recuerda: La técnica perfecta es más importante que el peso levantado</p>
+        </footer>
+    </div>
+    
+    <script>
+        // Referencias DOM
+        const dayButtons = document.querySelectorAll('.day-btn');
+        const workoutSections = document.querySelectorAll('.workout-details');
+        const dayCards = document.querySelectorAll('.day-card');
+        
+        // Función para mostrar detalles del día
+        function showDay(dayId) {
+            // Ocultar todas las secciones
+            workoutSections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Mostrar la sección seleccionada
+            const selectedSection = document.getElementById(dayId);
+            if (selectedSection) {
+                selectedSection.classList.add('active');
+            }
+            
+            // Actualizar botones activos
+            dayButtons.forEach(btn => {
+                if (btn.dataset.day === dayId) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+        
+        // Event listeners para botones de días
+        dayButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const dayId = button.dataset.day;
+                showDay(dayId);
+            });
+        });
+        
+        // Event listeners para tarjetas de días
+        dayCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const dayId = card.dataset.day;
+                showDay(dayId);
+                
+                // Scroll suave hacia los detalles
+                document.querySelector('.workout-details.active').scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            });
+        });
+        
+        // Inicializar con Lunes
+        showDay('lunes');
+    </script>
+</body>
+</html>
