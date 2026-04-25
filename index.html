@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pregunta Importante</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #fce4ec; /* Fondo rosa claro */
+            font-family: 'Arial', sans-serif;
+            overflow: hidden; /* Evita que salgan barras de desplazamiento cuando el botón vuela */
+            text-align: center;
+        }
+        h1 {
+            color: #d81b60;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            padding: 0 1rem;
+        }
+        .buttons {
+            display: flex;
+            gap: 20px;
+            z-index: 10;
+        }
+        button {
+            font-size: 1.5rem;
+            padding: 10px 30px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: background-color 0.2s;
+        }
+        #yesBtn {
+            background-color: #ec407a;
+            color: white;
+        }
+        #yesBtn:hover {
+            background-color: #d81b60;
+        }
+        #noBtn {
+            background-color: #fff;
+            color: #d81b60;
+            position: relative; 
+            transition: left 0.1s, top 0.1s; /* Movimiento fluido */
+        }
+    </style>
+</head>
+<body>
+
+    <h1>¿Quieres ser mi novia? 🥺</h1>
+    
+    <div class="buttons">
+        <button id="yesBtn">Sí</button>
+        <button id="noBtn">No</button>
+    </div>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+
+        function moveButton(e) {
+            // Evita el comportamiento por defecto en móviles
+            if(e) e.preventDefault(); 
+            
+            // Cambia a absolute para moverlo libremente por toda la pantalla
+            noBtn.style.position = 'absolute';
+            
+            // Calcula los límites para que no se salga de la pantalla
+            const maxX = window.innerWidth - noBtn.offsetWidth;
+            const maxY = window.innerHeight - noBtn.offsetHeight;
+            
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+            
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+        }
+
+        // Se mueve al pasar el ratón (PC)
+        noBtn.addEventListener('mouseenter', moveButton);
+        // Se mueve al intentar tocarlo (Móvil)
+        noBtn.addEventListener('touchstart', moveButton);
+
+        // Pantalla final si dice que sí
+        yesBtn.addEventListener('click', () => {
+            document.body.innerHTML = `
+                <h1 style="color: #d81b60;">¡Sabía que dirías que sí! ❤️</h1>
+                <img src="https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif" alt="Abrazo" style="max-width: 90%; border-radius: 10px;">
+            `;
+        });
+    </script>
+</body>
+</html>
