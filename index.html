@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="AeroLab: simuladores visuales de aviación, AGL, MSL, GPWS, motor 4T y flujo laminar.">
+  <meta name="description" content="AeroLab: simuladores visuales de motor 4T y flujo laminar.">
   <meta name="theme-color" content="#07111f">
   <meta property="og:title" content="AeroLab | Física aeronáutica interactiva">
-  <meta property="og:description" content="Explora AGL, MSL, elevación, margen de seguridad y alertas GPWS en un panel aeronáutico visual.">
+  <meta property="og:description" content="Explora el ciclo Otto y el flujo laminar con simulaciones visuales interactivas.">
   <title>AeroLab | Física aeronáutica interactiva</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -116,9 +116,6 @@
           <a href="#motor-4-tiempos" class="px-2.5 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800/70 transition-colors flex items-center gap-1.5">
             <span class="w-2 h-2 rounded-full bg-orange-400"></span> Motor 4T
           </a>
-          <a href="#altura-vs-altitud" class="px-2.5 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800/70 transition-colors flex items-center gap-1.5">
-            <span class="w-2 h-2 rounded-full bg-emerald-400"></span> Altura vs Altitud
-          </a>
           <a href="#flujo-laminar" class="px-2.5 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800/70 transition-colors flex items-center gap-1.5">
             <span class="w-2 h-2 rounded-full bg-teal-400"></span> Flujo Laminar
           </a>
@@ -141,8 +138,7 @@
     <!-- Mobile dropdown menu -->
     <div id="mobileMenu" class="hidden lg:hidden px-4 pt-2 pb-4 space-y-1 bg-slate-900 border-b border-slate-800 text-sm">
       <a href="#motor-4-tiempos" class="block px-3 py-2 rounded-md font-medium text-slate-300 hover:bg-slate-800">1. Motor a Pistón (4 Tiempos)</a>
-      <a href="#altura-vs-altitud" class="block px-3 py-2 rounded-md font-medium text-slate-300 hover:bg-slate-800">2. Aviación AGL / MSL</a>
-      <a href="#flujo-laminar" class="block px-3 py-2 rounded-md font-medium text-slate-300 hover:bg-slate-800">3. Flujo Laminar vs Turbulento</a>
+      <a href="#flujo-laminar" class="block px-3 py-2 rounded-md font-medium text-slate-300 hover:bg-slate-800">2. Flujo Laminar vs Turbulento</a>
     </div>
   </header>
 
@@ -156,30 +152,25 @@
         <span>🔬 Guía Interactiva de Física, Mecánica y Fluidos</span>
       </div>
       <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white mb-5 leading-tight">
-        Vuela con referencias claras: <br class="hidden sm:inline"/>
+        Explora la física en movimiento: <br class="hidden sm:inline"/>
         <span class="bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 bg-clip-text text-transparent">
-          MSL, AGL y terreno en tiempo real
+          motores, fluidos y simulaciones visuales
         </span>
       </h1>
       <p class="max-w-3xl mx-auto text-base sm:text-lg text-slate-400 mb-8 leading-relaxed font-light">
-        Entiende la diferencia entre altitud y altura con un panel visual de instrumentos, escenarios de vuelo y alertas de conciencia del terreno.
+        Comprende los principios de la mecánica y la dinámica de fluidos con experiencias interactivas en tiempo real.
       </p>
 
       <!-- Quick Section Jump Cards -->
-      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 max-w-6xl mx-auto text-left">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-4xl mx-auto text-left">
         <a href="#motor-4-tiempos" class="glass-card glass-card-hover p-4 rounded-xl group border-l-4 border-l-orange-500">
           <div class="text-xl mb-1">⚙️</div>
           <h3 class="font-bold text-white text-xs sm:text-sm group-hover:text-orange-400 transition-colors">1. Motor 4T</h3>
           <p class="text-[11px] text-slate-400 mt-0.5 leading-snug">Admisión, compresión, explosión y escape.</p>
         </a>
-        <a href="#altura-vs-altitud" class="glass-card glass-card-hover p-4 rounded-xl group border-l-4 border-l-emerald-500">
-          <div class="text-xl mb-1">✈️</div>
-          <h3 class="font-bold text-white text-xs sm:text-sm group-hover:text-emerald-400 transition-colors">Aviacion AGL / MSL</h3>
-          <p class="text-[11px] text-slate-400 mt-0.5 leading-snug">Diferencia entre AGL (suelo) y MSL (mar).</p>
-        </a>
         <a href="#flujo-laminar" class="glass-card glass-card-hover p-4 rounded-xl group border-l-4 border-l-teal-500 col-span-2 sm:col-span-1">
           <div class="text-xl mb-1">💧</div>
-          <h3 class="font-bold text-white text-xs sm:text-sm group-hover:text-teal-400 transition-colors">3. Flujo Laminar</h3>
+          <h3 class="font-bold text-white text-xs sm:text-sm group-hover:text-teal-400 transition-colors">2. Flujo Laminar</h3>
           <p class="text-[11px] text-slate-400 mt-0.5 leading-snug">Reynolds, agua de cristal y turbulencia.</p>
         </a>
       </div>
@@ -266,8 +257,8 @@
                 <!-- RPM slider -->
                 <div class="flex items-center gap-2 flex-1 max-w-xs justify-end">
                   <span class="text-xs text-slate-400 font-mono">Velocidad:</span>
-                  <input id="engineSpeedSlider" type="range" min="10" max="250" value="70" class="w-24 sm:w-32 accent-orange-500 bg-slate-800 rounded-lg cursor-pointer">
-                  <span id="engineRpmLabel" class="text-xs font-mono font-bold text-orange-400 w-16 text-right tabular-nums">700 RPM</span>
+                  <input id="engineSpeedSlider" type="range" min="10" max="200" value="50" class="w-24 sm:w-32 accent-orange-500 bg-slate-800 rounded-lg cursor-pointer">
+                  <span id="engineRpmLabel" class="text-xs font-mono font-bold text-orange-400 w-16 text-right tabular-nums">50 RPM</span>
                 </div>
               </div>
 
@@ -374,157 +365,6 @@
     <!-- ========================================================================= -->
     <!-- 2. INERCIA Y MARCOS DE REFERENCIA (SALTO EN EL TRÁILER) -->
     <!-- ========================================================================= -->
-    <section id="altura-vs-altitud" class="scroll-mt-24">
-      <div class="border-b border-slate-800 pb-4 mb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
-        <div>
-          <div class="inline-flex items-center gap-2 text-xs font-bold tracking-wider uppercase text-emerald-400 mb-1">
-            <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Aeronáutica & Topografía
-          </div>
-          <h2 class="text-2xl sm:text-3xl font-extrabold text-white">
-            2. Aviación: AGL, MSL y conciencia del terreno
-          </h2>
-          <p class="text-slate-400 mt-1 max-w-2xl text-xs sm:text-sm">
-            En aviación, confundir estos dos términos puede ser fatal. Aprende la diferencia entre <strong>MSL</strong> (nivel del mar), <strong>AGL</strong> (sobre el terreno) y la elevación.
-          </p>
-        </div>
-        <div>
-          <span class="px-3 py-1 bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 rounded-lg text-xs font-mono font-bold">
-            Altura (AGL) = Altitud (MSL) - Elevación Terreno
-          </span>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-
-        <!-- Flight Profile Canvas -->
-        <div class="lg:col-span-8 space-y-4">
-          <div class="glass-card rounded-2xl p-4 sm:p-5">
-
-            <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
-              <div class="flex items-center gap-2">
-                <span class="text-xs uppercase tracking-wider text-slate-400 font-bold">Modo:</span>
-                <span id="flightStatusBadge" class="w-32 text-center py-1 rounded-md bg-emerald-500/20 text-emerald-300 font-mono text-xs font-bold border border-emerald-500/30 inline-block">
-                  Crucero Seguro
-                </span>
-              </div>
-              <div class="flex items-center gap-2">
-                <button id="flightAutoPilotBtn" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition flex items-center gap-1.5">
-                  <span>✈️</span> Piloto Automático
-                </button>
-              </div>
-            </div>
-
-            <!-- Canvas Landscape & Airplane -->
-            <div class="relative w-full aspect-[16/9] min-h-[280px] sm:min-h-[340px] bg-slate-950 rounded-xl border border-slate-800 overflow-hidden">
-              <canvas id="altitudeCanvas" width="800" height="420" class="w-full h-full object-cover"></canvas>
-
-              <!-- GPWS Banner -->
-              <div id="gpwsWarningBanner" class="absolute top-4 left-1/2 -translate-x-1/2 px-4 py-2 rounded-xl bg-rose-600/90 text-white font-black text-xs uppercase tracking-widest border border-rose-400 shadow-2xl alarm-blink hidden">
-                ⚠️ ALERTA: ¡TERRENO PRÓXIMO! (PULL UP!)
-              </div>
-
-              <!-- HUD with rigid tabular values -->
-              <div class="absolute bottom-3 left-3 bg-slate-900/90 backdrop-blur-md p-3 rounded-xl border border-slate-700/80 font-mono text-xs space-y-1.5">
-                <div class="flex items-center justify-between gap-4">
-                  <span class="text-amber-400 font-semibold">ALTITUD (MSL):</span>
-                  <span id="hudMslAlt" class="font-bold text-white text-xs sm:text-sm tabular-nums w-44 text-right">2,500 m (8,202 ft)</span>
-                </div>
-                <div class="flex items-center justify-between gap-4">
-                  <span class="text-emerald-400 font-semibold">ALTURA (AGL):</span>
-                  <span id="hudAglAlt" class="font-bold text-emerald-300 text-xs sm:text-sm tabular-nums w-44 text-right">1,500 m (4,921 ft)</span>
-                </div>
-                <div class="flex items-center justify-between gap-4 border-t border-slate-800 pt-1 text-[11px]">
-                  <span class="text-slate-400">Elevación Terreno:</span>
-                  <span id="hudElevation" class="text-slate-300 font-medium tabular-nums w-24 text-right">1,000 m</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Plane Control Sliders -->
-            <div class="mt-4 pt-3 border-t border-slate-800/80 space-y-3">
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div class="space-y-1">
-                  <div class="flex justify-between text-xs">
-                    <span class="text-slate-400 font-semibold">Posición del Avión:</span>
-                    <span id="planeXPosLabel" class="font-mono text-cyan-400">Sobre la Meseta</span>
-                  </div>
-                  <input id="planeXSlider" type="range" min="50" max="750" value="380" class="w-full accent-cyan-400 bg-slate-800 rounded-lg cursor-pointer">
-                </div>
-
-                <div class="space-y-1">
-                  <div class="flex justify-between text-xs">
-                    <span class="text-slate-400 font-semibold">Altitud MSL (Sobre el Mar):</span>
-                    <span id="planeMslSliderLabel" class="font-mono text-amber-400 tabular-nums">2,500 m</span>
-                  </div>
-                  <input id="planeMslSlider" type="range" min="400" max="3800" step="20" value="2500" class="w-full accent-amber-500 bg-slate-800 rounded-lg cursor-pointer">
-                </div>
-              </div>
-
-              <!-- Quick Flight Location Presets -->
-              <div class="flex flex-wrap items-center gap-2 pt-1">
-                <span class="text-xs text-slate-400 font-semibold">Presets:</span>
-                <button class="flight-preset-btn px-2.5 py-1 rounded-lg text-xs bg-slate-900 border border-slate-800 text-slate-300 hover:text-white transition" data-x="700" data-msl="1800">
-                  🛫 Aeropuerto
-                </button>
-                <button class="flight-preset-btn px-2.5 py-1 rounded-lg text-xs bg-slate-900 border border-slate-800 text-slate-300 hover:text-white transition" data-x="120" data-msl="1800">
-                  🌊 Costa
-                </button>
-                <button class="flight-preset-btn px-2.5 py-1 rounded-lg text-xs bg-slate-900 border border-slate-800 text-slate-300 hover:text-white transition" data-x="480" data-msl="3600">
-                  🏔️ Cordillera
-                </button>
-                <button class="flight-preset-btn px-2.5 py-1 rounded-lg text-xs bg-slate-900 border border-slate-800 text-slate-300 hover:text-white transition" data-x="700" data-msl="1200">
-                  🛬 Aproximación
-                </button>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- Aviation Concepts Card -->
-        <div class="lg:col-span-4 space-y-4">
-          <div class="glass-card rounded-2xl p-5">
-            <h3 class="text-base font-bold text-white mb-2.5 flex items-center gap-2">
-              <span>🧭</span> Conceptos Aeronáuticos
-            </h3>
-
-            <div class="space-y-2.5 text-xs">
-              <div class="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20">
-                <div class="font-bold text-amber-300 text-sm mb-0.5">Altitud (MSL)</div>
-                Distancia vertical desde el <strong>Nivel Medio del Mar</strong>. Medida con el altímetro barométrico ajustado a QNH.
-              </div>
-
-              <div class="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
-                <div class="font-bold text-emerald-300 text-sm mb-0.5">Altura (AGL)</div>
-                Distancia vertical real entre el avión y el <strong>suelo inmediatamente debajo</strong>. Medida con radioaltímetro.
-              </div>
-
-              <div class="p-2.5 rounded-xl bg-slate-900/60 border border-slate-800">
-                <div class="font-bold text-slate-200 text-sm mb-0.5">Elevación</div>
-                Cota del terreno o de la pista sobre el nivel medio del mar.
-              </div>
-            </div>
-
-            <!-- Warning -->
-            <div class="mt-3 p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-xs text-rose-300 leading-relaxed">
-              <strong>⚠️ Riesgo de CFIT:</strong> Volar a 3,000 m MSL sobre el mar te da 3,000 m de margen. Pero ante una colina de 2,800 m, ¡el margen real AGL es de solo <strong>200 m</strong>!
-            </div>
-            <div class="mt-4 grid grid-cols-2 gap-2 text-center font-mono text-[11px]">
-              <div class="rounded-lg border border-amber-500/20 bg-amber-500/10 p-2"><span class="block text-slate-400">MSL</span><strong id="instrumentMsl" class="text-amber-300">2,500 m</strong></div>
-              <div class="rounded-lg border border-emerald-500/20 bg-emerald-500/10 p-2"><span class="block text-slate-400">AGL</span><strong id="instrumentAgl" class="text-emerald-300">1,500 m</strong></div>
-              <div class="rounded-lg border border-slate-700 bg-slate-900/60 p-2"><span class="block text-slate-400">Elevación</span><strong id="instrumentElevation" class="text-slate-200">1,000 m</strong></div>
-              <div class="rounded-lg border border-cyan-500/20 bg-cyan-500/10 p-2"><span class="block text-slate-400">Margen</span><strong id="instrumentMargin" class="text-cyan-300">300 m</strong></div>
-            </div>
-            <p id="cfitStatus" class="mt-3 rounded-lg border border-emerald-500/30 bg-emerald-500/10 p-2 text-center text-xs font-bold text-emerald-300" aria-live="polite">GPWS: MARGEN VERTICAL DISPONIBLE</p>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- ========================================================================= -->
-    <!-- 5. FLUJO LAMINAR VS. FLUJO TURBULENTO (NUEVA SECCIÓN) -->
-    <!-- ========================================================================= -->
     <section id="flujo-laminar" class="scroll-mt-24">
       <div class="border-b border-slate-800 pb-4 mb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
@@ -532,7 +372,7 @@
             <span class="w-2 h-2 rounded-full bg-teal-500"></span> Mecánica de Fluidos & Dinámica de Medios Continuos
           </div>
           <h2 class="text-2xl sm:text-3xl font-extrabold text-white">
-            3. Flujo Laminar vs. Flujo Turbulento
+            2. Flujo Laminar vs. Flujo Turbulento
           </h2>
           <p class="text-slate-400 mt-1 max-w-2xl text-xs sm:text-sm">
             Descubre por qué a baja velocidad o alta viscosidad los fluidos se desplazan en láminas paralelas sin mezclarse jamás (el efecto 'agua de cristal'), y cómo el <strong>Número de Reynolds</strong> desata el caos turbulento.
@@ -721,7 +561,7 @@
 
       let isPlaying = true;
       let crankDeg = 0; // 0 to 720 degrees
-      let rpm = 700;
+      let rpm = 50;
       let lastTime = performance.now();
 
       // UI References
@@ -1369,14 +1209,14 @@
       });
 
       speedSlider.addEventListener('input', (e) => {
-        rpm = parseInt(e.target.value) * 10;
+        rpm = parseInt(e.target.value);
         rpmLabel.textContent = `${rpm} RPM`;
       });
 
       slowMoBtn.addEventListener('click', () => {
-        rpm = 120;
-        speedSlider.value = 12;
-        rpmLabel.textContent = '120 RPM';
+        rpm = 20;
+        speedSlider.value = 20;
+        rpmLabel.textContent = '20 RPM';
         if (!isPlaying) {
           isPlaying = true;
           playText.textContent = 'Pausar';
@@ -1473,306 +1313,6 @@
       requestAnimationFrame(animationLoop);
     })();
 
-    /* ========================================================================= */
-    /* 1. AVIACIÓN: ALTURA VS. ALTITUD (AGL VS MSL)                             */
-    (function initAltitude() {
-      const canvas = document.getElementById('altitudeCanvas');
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-
-      const planeXSlider = document.getElementById('planeXSlider');
-      const planeMslSlider = document.getElementById('planeMslSlider');
-      const planeXLabel = document.getElementById('planeXPosLabel');
-      const planeMslLabel = document.getElementById('planeMslSliderLabel');
-      const hudMsl = document.getElementById('hudMslAlt');
-      const hudAgl = document.getElementById('hudAglAlt');
-      const hudElevation = document.getElementById('hudElevation');
-      const instrumentMsl = document.getElementById('instrumentMsl');
-      const instrumentAgl = document.getElementById('instrumentAgl');
-      const instrumentElevation = document.getElementById('instrumentElevation');
-      const instrumentMargin = document.getElementById('instrumentMargin');
-      const cfitStatus = document.getElementById('cfitStatus');
-      const warningBanner = document.getElementById('gpwsWarningBanner');
-      const autoPilotBtn = document.getElementById('flightAutoPilotBtn');
-
-      let planeX = 380;
-      let flightAltMsl = 2500;
-      let isAutoPilot = false;
-
-      const seaLevelY = 370;
-      const maxAltScaleM = 4000;
-      const pxPerMeterY = 320 / maxAltScaleM;
-
-      function getTerrainElevation(x) {
-        if (x < 150) return 0;
-        else if (x < 250) {
-          const t = (x - 150) / 100;
-          return t * 150;
-        } else if (x < 420) {
-          const t = (x - 250) / 170;
-          return 150 + Math.sin(t * Math.PI) * 500;
-        } else if (x < 580) {
-          const t = (x - 420) / 160;
-          return 400 + Math.sin(t * Math.PI) * 2000;
-        } else if (x < 680) {
-          const t = (x - 580) / 100;
-          return 2400 - t * 1400;
-        } else {
-          return 1000;
-        }
-      }
-
-      function updateFlightTelemetry() {
-        const terrainM = Math.round(getTerrainElevation(planeX));
-        const aglM = Math.round(flightAltMsl - terrainM);
-        const marginM = Math.max(0, aglM - 300);
-
-        planeMslLabel.textContent = `${flightAltMsl} m`;
-        hudMsl.textContent = `${flightAltMsl} m (${Math.round(flightAltMsl * 3.28084)} ft)`;
-        hudAgl.textContent = `${aglM} m (${Math.round(aglM * 3.28084)} ft)`;
-        hudElevation.textContent = `${terrainM} m`;
-        instrumentMsl.textContent = `${flightAltMsl} m`;
-        instrumentAgl.textContent = `${Math.max(aglM, 0)} m`;
-        instrumentElevation.textContent = `${terrainM} m`;
-        instrumentMargin.textContent = `${marginM} m`;
-
-        if (planeX < 150) planeXLabel.textContent = "Sobre el Océano";
-        else if (planeX < 350) planeXLabel.textContent = "Sobre Costa / Valle";
-        else if (planeX < 600) planeXLabel.textContent = "Sobre la Cordillera";
-        else planeXLabel.textContent = "Aproximación Pista";
-
-        if (aglM <= 150) {
-          warningBanner.classList.remove('hidden');
-          hudAgl.className = "font-bold text-rose-400 text-xs sm:text-sm tabular-nums w-44 text-right";
-          cfitStatus.textContent = aglM <= 0 ? "GPWS: PULL UP · ALERTA CFIT" : "GPWS: TERRAIN AHEAD · PULL UP";
-          cfitStatus.className = "mt-3 rounded-lg border border-rose-500/40 bg-rose-500/15 p-2 text-center text-xs font-bold text-rose-300 alarm-blink";
-        } else if (aglM <= 400) {
-          warningBanner.classList.add('hidden');
-          hudAgl.className = "font-bold text-amber-400 text-xs sm:text-sm tabular-nums w-44 text-right";
-          cfitStatus.textContent = "GPWS: PRECAUCIÓN · MARGEN REDUCIDO";
-          cfitStatus.className = "mt-3 rounded-lg border border-amber-500/40 bg-amber-500/10 p-2 text-center text-xs font-bold text-amber-300";
-        } else {
-          warningBanner.classList.add('hidden');
-          hudAgl.className = "font-bold text-emerald-300 text-xs sm:text-sm tabular-nums w-44 text-right";
-          cfitStatus.textContent = "GPWS: MARGEN VERTICAL DISPONIBLE";
-          cfitStatus.className = "mt-3 rounded-lg border border-emerald-500/30 bg-emerald-500/10 p-2 text-center text-xs font-bold text-emerald-300";
-        }
-      }
-
-      function drawAltitudeScene() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        const sky = ctx.createLinearGradient(0, 0, 0, seaLevelY);
-        sky.addColorStop(0, '#0284c7');
-        sky.addColorStop(0.7, '#38bdf8');
-        sky.addColorStop(1, '#bae6fd');
-        ctx.fillStyle = sky;
-        ctx.fillRect(0, 0, canvas.width, seaLevelY);
-
-        ctx.beginPath();
-        ctx.moveTo(0, seaLevelY);
-        for (let x = 0; x <= canvas.width; x += 4) {
-          const elev = getTerrainElevation(x);
-          const y = seaLevelY - elev * pxPerMeterY;
-          ctx.lineTo(x, y);
-        }
-        ctx.lineTo(canvas.width, canvas.height);
-        ctx.lineTo(0, canvas.height);
-        ctx.closePath();
-
-        const groundGrad = ctx.createLinearGradient(0, 100, 0, canvas.height);
-        groundGrad.addColorStop(0, '#334155');
-        groundGrad.addColorStop(0.4, '#1e293b');
-        groundGrad.addColorStop(1, '#0f172a');
-        ctx.fillStyle = groundGrad;
-        ctx.fill();
-        ctx.strokeStyle = '#10b981';
-        ctx.lineWidth = 3;
-        ctx.stroke();
-
-        // Snow on high peaks
-        ctx.fillStyle = '#f8fafc';
-        ctx.beginPath();
-        for (let x = 460; x <= 540; x += 4) {
-          const elev = getTerrainElevation(x);
-          if (elev > 1800) {
-            const y = seaLevelY - elev * pxPerMeterY;
-            if (x === 460) ctx.moveTo(x, y);
-            else ctx.lineTo(x, y);
-          }
-        }
-        ctx.lineTo(540, seaLevelY - 1800 * pxPerMeterY + 25);
-        ctx.lineTo(460, seaLevelY - 1800 * pxPerMeterY + 25);
-        ctx.closePath();
-        ctx.fill();
-
-        ctx.fillStyle = '#0284c7';
-        ctx.fillRect(0, seaLevelY - 4, 150, canvas.height - seaLevelY + 4);
-
-        // Runway
-        ctx.fillStyle = '#475569';
-        const rY = seaLevelY - 1000 * pxPerMeterY;
-        ctx.fillRect(700, rY - 4, 90, 8);
-        ctx.strokeStyle = '#f8fafc';
-        ctx.setLineDash([6, 6]);
-        ctx.beginPath();
-        ctx.moveTo(705, rY);
-        ctx.lineTo(785, rY);
-        ctx.stroke();
-        ctx.setLineDash([]);
-
-        // MSL Line
-        ctx.strokeStyle = '#2563eb';
-        ctx.lineWidth = 2.5;
-        ctx.setLineDash([8, 6]);
-        ctx.beginPath();
-        ctx.moveTo(0, seaLevelY);
-        ctx.lineTo(canvas.width, seaLevelY);
-        ctx.stroke();
-        ctx.setLineDash([]);
-
-        ctx.fillStyle = '#1d4ed8';
-        ctx.font = 'bold 11px JetBrains Mono';
-        ctx.fillText('Nivel Medio del Mar (MSL = 0m)', 12, seaLevelY - 8);
-
-        // Airplane
-        const planeY = seaLevelY - flightAltMsl * pxPerMeterY;
-        const groundUnderPlaneY = seaLevelY - getTerrainElevation(planeX) * pxPerMeterY;
-
-        // Brackets
-        ctx.strokeStyle = '#f59e0b';
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(planeX - 35, seaLevelY);
-        ctx.lineTo(planeX - 35, planeY);
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.moveTo(planeX - 42, seaLevelY);
-        ctx.lineTo(planeX - 28, seaLevelY);
-        ctx.moveTo(planeX - 42, planeY);
-        ctx.lineTo(planeX - 28, planeY);
-        ctx.stroke();
-
-        ctx.fillStyle = '#f59e0b';
-        ctx.font = 'bold 10px JetBrains Mono';
-        ctx.textAlign = 'right';
-        ctx.fillText(`Altitud (MSL): ${flightAltMsl}m`, planeX - 42, (planeY + seaLevelY) / 2);
-
-        ctx.strokeStyle = '#ec4899';
-        ctx.lineWidth = 2.5;
-        ctx.beginPath();
-        ctx.moveTo(planeX + 35, groundUnderPlaneY);
-        ctx.lineTo(planeX + 35, planeY);
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.moveTo(planeX + 28, groundUnderPlaneY);
-        ctx.lineTo(planeX + 42, groundUnderPlaneY);
-        ctx.moveTo(planeX + 28, planeY);
-        ctx.lineTo(planeX + 42, planeY);
-        ctx.stroke();
-
-        ctx.fillStyle = '#ec4899';
-        ctx.font = 'bold 10px JetBrains Mono';
-        ctx.textAlign = 'left';
-        const aglM = Math.round(flightAltMsl - getTerrainElevation(planeX));
-        ctx.fillText(`Altura (AGL): ${aglM}m`, planeX + 45, (planeY + groundUnderPlaneY) / 2);
-
-        if (getTerrainElevation(planeX) > 50) {
-          ctx.strokeStyle = '#10b981';
-          ctx.lineWidth = 1.5;
-          ctx.setLineDash([3, 3]);
-          ctx.beginPath();
-          ctx.moveTo(planeX, seaLevelY);
-          ctx.lineTo(planeX, groundUnderPlaneY);
-          ctx.stroke();
-          ctx.setLineDash([]);
-        }
-
-        // Airplane Model
-        ctx.save();
-        ctx.translate(planeX, planeY);
-
-        ctx.fillStyle = '#f8fafc';
-        ctx.beginPath();
-        ctx.ellipse(0, 0, 22, 6, 0, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.strokeStyle = '#0284c7';
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
-
-        ctx.fillStyle = '#38bdf8';
-        ctx.beginPath();
-        ctx.moveTo(-6, -14);
-        ctx.lineTo(6, 0);
-        ctx.lineTo(-6, 14);
-        ctx.lineTo(-2, 0);
-        ctx.closePath();
-        ctx.fill();
-
-        ctx.fillStyle = '#f97316';
-        ctx.beginPath();
-        ctx.moveTo(-16, 0);
-        ctx.lineTo(-22, -10);
-        ctx.lineTo(-18, -10);
-        ctx.lineTo(-12, 0);
-        ctx.closePath();
-        ctx.fill();
-
-        ctx.fillStyle = '#fbbf24';
-        ctx.beginPath();
-        ctx.arc(-24, 0, 3 + Math.random() * 2, 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.restore();
-      }
-
-      planeXSlider.addEventListener('input', (e) => {
-        planeX = parseFloat(e.target.value);
-        updateFlightTelemetry();
-        drawAltitudeScene();
-      });
-
-      planeMslSlider.addEventListener('input', (e) => {
-        flightAltMsl = parseFloat(e.target.value);
-        updateFlightTelemetry();
-        drawAltitudeScene();
-      });
-
-      document.querySelectorAll('.flight-preset-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          planeX = parseFloat(btn.dataset.x);
-          flightAltMsl = parseFloat(btn.dataset.msl);
-          planeXSlider.value = planeX;
-          planeMslSlider.value = flightAltMsl;
-          updateFlightTelemetry();
-          drawAltitudeScene();
-        });
-      });
-
-      autoPilotBtn.addEventListener('click', () => {
-        isAutoPilot = !isAutoPilot;
-        autoPilotBtn.className = isAutoPilot
-          ? "px-3 py-1.5 rounded-lg text-xs font-bold bg-cyan-500 text-slate-950 border border-cyan-400 shadow transition flex items-center gap-1.5"
-          : "px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition flex items-center gap-1.5";
-      });
-
-      function animAltitudeLoop() {
-        if (isAutoPilot) {
-          planeX += 0.8;
-          if (planeX > 750) planeX = 60;
-          planeXSlider.value = planeX;
-          updateFlightTelemetry();
-        }
-        drawAltitudeScene();
-        requestAnimationFrame(animAltitudeLoop);
-      }
-
-      updateFlightTelemetry();
-      requestAnimationFrame(animAltitudeLoop);
-    })();
-
-    /* ========================================================================= */
-    /* 5. FLUJO LAMINAR VS. TURBULENTO SIMULATION                                */
     /* ========================================================================= */
     (function initLaminarFlow() {
       const canvas = document.getElementById('laminarCanvas');
