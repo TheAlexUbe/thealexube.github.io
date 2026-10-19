@@ -1,16 +1,30 @@
 # AeroLab
 
-Sitio estático para GitHub Pages centrado en conceptos aeronáuticos. La experiencia principal es el simulador de conciencia del terreno, con cálculo de:
+AeroLab es una experiencia web estática para explorar aviación, física y mecánica mediante simulaciones visuales en tiempo real con HTML5 Canvas y Tailwind CSS.
 
-- **Altitud MSL**: referencia vertical sobre el nivel medio del mar.
-- **Altura AGL**: separación entre la aeronave y el terreno.
-- **Elevación**: cota del terreno sobre MSL.
-- **Margen de seguridad**, estados GPWS y alerta didáctica de CFIT.
+## Simulaciones incluidas
 
-Incluye dos módulos secundarios: un ciclo Otto de motor de cuatro tiempos y una visualización de flujo laminar/turbulento basada en un número de Reynolds estimado.
+### 1. Aviación: AGL, MSL y conciencia del terreno
+
+- Relación `AGL = MSL - elevación`.
+- Panel visual con MSL, AGL, elevación y margen.
+- Escenarios Aeropuerto, Costa, Cordillera y Aproximación.
+- Relieve navegable, referencias visuales, modo piloto automático y alertas didácticas GPWS, PULL UP y CFIT.
+
+### 2. Motor de cuatro tiempos
+
+Animación del ciclo Otto de 720 grados con cinemática de biela-manivela, válvulas sincronizadas, partículas de combustible, combustión, controles de RPM y avance paso a paso.
+
+### 3. Flujo laminar y turbulento
+
+Visualización Canvas del número de Reynolds, túnel con obstáculo, chorro laminar, inyección de tinte y presets de agua, aceite, glicerina y aire.
 
 ## Desarrollo
 
-No requiere compilación ni servidor: `index.html` carga Tailwind desde CDN y ejecuta JavaScript nativo en el navegador. Para probarlo localmente basta con abrir el archivo o servir el directorio con cualquier servidor estático. Es compatible con GitHub Pages.
+No requiere compilación. `index.html` carga Tailwind y las fuentes desde CDN, y ejecuta JavaScript nativo en el navegador. Para probarlo localmente:
 
-Los modelos son educativos y no sustituyen cartas, procedimientos, instrumentos certificados ni entrenamiento aeronáutico.
+```powershell
+python -m http.server 4173
+```
+
+Los modelos son educativos y no sustituyen cartas, procedimientos operativos, instrumentos certificados ni entrenamiento aeronáutico.
