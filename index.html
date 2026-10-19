@@ -3,12 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="AeroLab: simuladores visuales de motor 4T y flujo laminar.">
-  <meta name="theme-color" content="#07111f">
-  <meta property="og:title" content="AeroLab | Física aeronáutica interactiva">
-  <meta property="og:description" content="Explora el ciclo Otto y el flujo laminar con simulaciones visuales interactivas.">
-  <title>AeroLab | Física aeronáutica interactiva</title>
-  <!-- Tailwind CSS CDN -->
+  <meta name="description" content="Simulaci?n interactiva de un motor de cuatro tiempos y el ciclo Otto.">
+  <meta name="theme-color" content="#0b0d12">
+  <meta property="og:title" content="Motor 4T | Ciclo Otto interactivo">
+  <meta property="og:description" content="Explora la admisi?n, compresi?n, explosi?n y escape en una simulaci?n visual del motor 4T.">
+  <title>Motor 4T | Ciclo Otto interactivo</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -16,1455 +15,1942 @@
       theme: {
         extend: {
           colors: {
-            brand: {
-              50: '#f0fdf4',
-              500: '#10b981',
-              600: '#059669',
-            },
-            engine: {
-              intake: '#38bdf8',
-              compression: '#fbbf24',
-              combustion: '#f97316',
-              exhaust: '#94a3b8'
-            }
+            engine: { intake: '#38bdf8', compression: '#fbbf24', combustion: '#f97316', exhaust: '#94a3b8' }
           },
-          fontFamily: {
-            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
-            mono: ['monospace']
-          }
+          fontFamily: { sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'], mono: ['monospace'] }
         }
       }
     }
   </script>
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: 'Inter', sans-serif;
-    }
-    .font-mono {
-      font-family: monospace;
-    }
-    .tabular-nums {
-      font-variant-numeric: tabular-nums;
-    }
-    /* Custom subtle glassmorphism */
-    .glass-card {
-      background: rgba(30, 41, 59, 0.7);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-    .glass-card-hover {
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .glass-card-hover:hover {
-      border-color: rgba(56, 189, 248, 0.3);
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(56, 189, 248, 0.1);
-    }
-    /* Custom scrollbars */
-    ::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #0f172a;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #334155;
-      border-radius: 4px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #475569;
-    }
-    @keyframes alertPulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
-    }
-    .alarm-blink {
-      animation: alertPulse 0.8s infinite;
-    }
+    body { font-family: 'Inter', sans-serif; }
+    .font-mono { font-family: monospace; }
+    .tabular-nums { font-variant-numeric: tabular-nums; }
+    .engine-panel { background: #151922; border: 1px solid #252b38; }
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #0b0d12; }
+    ::-webkit-scrollbar-thumb { background: #303746; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #465064; }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen selection:bg-cyan-500 selection:text-white">
-
-  <!-- ================= TOP NAVIGATION BAR ================= -->
-  <header class="sticky top-0 z-50 glass-card border-b border-slate-800/80">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-16">
-        <!-- Brand / Logo -->
-        <a href="#hero" class="flex items-center gap-3 group">
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-emerald-400 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-cyan-500/20 group-hover:scale-105 transition-transform">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
-          </div>
-          <div>
-            <span class="text-lg font-bold bg-gradient-to-r from-white via-slate-200 to-cyan-400 bg-clip-text text-transparent">
-              Física Interactiva
-            </span>
-            <span class="block text-[10px] tracking-wider uppercase text-cyan-400 font-semibold">
-              Simuladores Visuales
-            </span>
-          </div>
-        </a>
-
-        <!-- Desktop Navigation Links -->
-        <nav class="hidden lg:flex items-center space-x-1">
-          <a href="#motor-4-tiempos" class="px-2.5 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800/70 transition-colors flex items-center gap-1.5">
-            <span class="w-2 h-2 rounded-full bg-orange-400"></span> Motor 4T
-          </a>
-          <a href="#flujo-laminar" class="px-2.5 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800/70 transition-colors flex items-center gap-1.5">
-            <span class="w-2 h-2 rounded-full bg-teal-400"></span> Flujo Laminar
-          </a>
-        </nav>
-
-        <!-- Right Side Badges / Mobile menu button -->
-        <div class="flex items-center gap-2">
-          <span class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-            Canvas 60 FPS
-          </span>
-          <button id="mobileMenuBtn" class="lg:hidden p-2 rounded-lg bg-slate-800 text-slate-300 hover:text-white">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-            </svg>
-          </button>
+<body class="bg-[#0b0d12] text-slate-100 min-h-screen selection:bg-orange-500 selection:text-white">
+  <header class="border-b border-slate-800/80 bg-[#0f1219]">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
+      <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-orange-400">Simulaci?n mec?nica</p>
+          <h1 class="mt-1 text-2xl font-bold tracking-tight text-white sm:text-3xl">Motor 4T ? Ciclo Otto</h1>
         </div>
+        <span class="w-fit rounded-full border border-orange-500/30 bg-orange-500/10 px-3 py-1 text-xs font-mono text-orange-300">720? = 1 ciclo</span>
       </div>
-    </div>
-    <!-- Mobile dropdown menu -->
-    <div id="mobileMenu" class="hidden lg:hidden px-4 pt-2 pb-4 space-y-1 bg-slate-900 border-b border-slate-800 text-sm">
-      <a href="#motor-4-tiempos" class="block px-3 py-2 rounded-md font-medium text-slate-300 hover:bg-slate-800">1. Motor a Pistón (4 Tiempos)</a>
-      <a href="#flujo-laminar" class="block px-3 py-2 rounded-md font-medium text-slate-300 hover:bg-slate-800">2. Flujo Laminar vs Turbulento</a>
     </div>
   </header>
 
-  <!-- ================= HERO INTRO SECTION ================= -->
-  <section id="hero" class="relative overflow-hidden py-14 lg:py-20 border-b border-slate-800/60 bg-gradient-to-b from-slate-900/60 via-slate-950 to-slate-950">
-    <div class="absolute -top-40 -right-40 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
-    <div class="absolute top-20 -left-40 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
-
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800/90 border border-slate-700 text-xs font-semibold text-cyan-400 mb-6 shadow-inner">
-        <span>🔬 Guía Interactiva de Física, Mecánica y Fluidos</span>
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
+    <section id="motor-4-tiempos" aria-labelledby="engine-title">
+      <div class="mb-6 max-w-3xl">
+        <h2 id="engine-title" class="text-xl font-bold text-white sm:text-2xl">Observa c?mo trabaja un motor de cuatro tiempos</h2>
+        <p class="mt-2 text-sm leading-relaxed text-slate-400 sm:text-base">Recorre el ciclo Otto y comprueba c?mo el pist?n, las v?lvulas y el cig?e?al se coordinan durante la admisi?n, compresi?n, explosi?n y escape.</p>
       </div>
-      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white mb-5 leading-tight">
-        Explora la física en movimiento: <br class="hidden sm:inline"/>
-        <span class="bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 bg-clip-text text-transparent">
-          motores, fluidos y simulaciones visuales
-        </span>
-      </h1>
-      <p class="max-w-3xl mx-auto text-base sm:text-lg text-slate-400 mb-8 leading-relaxed font-light">
-        Comprende los principios de la mecánica y la dinámica de fluidos con experiencias interactivas en tiempo real.
-      </p>
-
-      <!-- Quick Section Jump Cards -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-4xl mx-auto text-left">
-        <a href="#motor-4-tiempos" class="glass-card glass-card-hover p-4 rounded-xl group border-l-4 border-l-orange-500">
-          <div class="text-xl mb-1">⚙️</div>
-          <h3 class="font-bold text-white text-xs sm:text-sm group-hover:text-orange-400 transition-colors">1. Motor 4T</h3>
-          <p class="text-[11px] text-slate-400 mt-0.5 leading-snug">Admisión, compresión, explosión y escape.</p>
-        </a>
-        <a href="#flujo-laminar" class="glass-card glass-card-hover p-4 rounded-xl group border-l-4 border-l-teal-500 col-span-2 sm:col-span-1">
-          <div class="text-xl mb-1">💧</div>
-          <h3 class="font-bold text-white text-xs sm:text-sm group-hover:text-teal-400 transition-colors">2. Flujo Laminar</h3>
-          <p class="text-[11px] text-slate-400 mt-0.5 leading-snug">Reynolds, perfiles aerodinámicos y estelas.</p>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-20">
-
-    <!-- ========================================================================= -->
     <!-- 1. MOTOR A PISTÓN DE 4 TIEMPOS (CICLO OTTO) -->
+
     <!-- ========================================================================= -->
+
     <section id="motor-4-tiempos" class="scroll-mt-24">
+
       <div class="border-b border-slate-800 pb-4 mb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
+
         <div>
+
           <div class="inline-flex items-center gap-2 text-xs font-bold tracking-wider uppercase text-orange-400 mb-1">
+
             <span class="w-2 h-2 rounded-full bg-orange-500"></span> Termodinámica y Mecánica de Precisión
+
           </div>
+
           <h2 class="text-2xl sm:text-3xl font-extrabold text-white">
+
             1. Motor a Pistón de 4 Tiempos (Ciclo Otto)
+
           </h2>
+
           <p class="text-slate-400 mt-1 max-w-2xl text-xs sm:text-sm">
+
             Simulación mecánica con cinemática real biela-manivela, árbol de levas y válvulas sincronizadas en un ciclo termodinámico de 720° de rotación.
+
           </p>
+
         </div>
+
         <div class="flex items-center gap-2">
+
           <span class="px-3 py-1 bg-orange-500/10 text-orange-400 border border-orange-500/30 rounded-lg text-xs font-mono font-bold">
+
             720° de Giro = 1 Ciclo Completo
+
           </span>
+
         </div>
+
       </div>
+
+
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+
 
         <!-- Left: Canvas Simulation & Rigid Zero-Jitter Controls -->
+
         <div class="lg:col-span-7 space-y-4">
+
           <div class="glass-card rounded-2xl p-4 sm:p-5 relative overflow-hidden">
 
+
+
             <!-- Rigid Header (Fixed Widths, NO Jittering) -->
+
             <div class="flex items-center justify-between mb-3 h-8">
+
               <div class="flex items-center gap-2">
+
                 <span id="strokeBadge" class="w-32 py-1 rounded-full text-xs font-bold uppercase tracking-wide bg-blue-500 text-white shadow-md text-center inline-block">
+
                   1. Admisión
+
                 </span>
+
                 <span id="crankAngleDisplay" class="font-mono text-xs text-slate-300 bg-slate-800/90 px-2.5 py-1 rounded-md border border-slate-700 w-36 text-center tabular-nums inline-block">
+
                   Cigüeñal: 000°
+
                 </span>
+
               </div>
+
               <div class="flex items-center gap-1.5">
+
                 <button id="engineSlowMoBtn" class="px-2.5 py-1 text-xs rounded bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition">
+
                   Cámara Lenta
+
                 </button>
+
                 <button id="engineResetBtn" class="px-2.5 py-1 text-xs rounded bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition">
+
                   0° (PMS)
+
                 </button>
+
               </div>
+
             </div>
+
+
 
             <!-- Canvas Container with Exact Fixed Dimensions -->
+
             <div class="relative w-full aspect-[1/1] max-h-[500px] bg-slate-900/95 rounded-xl border border-slate-800 flex items-center justify-center overflow-hidden shadow-inner">
+
               <canvas id="engineCanvas" width="500" height="500" class="w-full h-full object-contain cursor-crosshair"></canvas>
 
+
+
               <!-- Spark Flash Overlay -->
+
               <div id="sparkFlashOverlay" class="absolute inset-0 bg-yellow-300/25 pointer-events-none opacity-0 transition-opacity duration-75"></div>
 
+
+
               <!-- Tooltip overlay on hover -->
+
               <div id="enginePartTooltip" class="absolute bottom-3 left-3 right-3 sm:right-auto sm:max-w-xs glass-card p-3 rounded-xl text-xs border border-cyan-500/40 hidden pointer-events-none shadow-2xl backdrop-blur-md">
+
                 <div class="font-bold text-cyan-400 flex items-center gap-1.5" id="enginePartName">Componente</div>
+
                 <div class="text-slate-300 text-[11px] mt-0.5 leading-snug" id="enginePartDesc">Descripción...</div>
+
               </div>
+
             </div>
+
+
 
             <!-- Playback & Speed Controls -->
+
             <div class="mt-4 pt-4 border-t border-slate-800/80 space-y-3">
+
               <div class="flex flex-wrap items-center justify-between gap-3">
+
                 <div class="flex items-center gap-2">
+
                   <button id="enginePlayPauseBtn" class="w-28 py-2 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-slate-950 font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-orange-500/20 transition-all">
+
                     <span id="enginePlayText">Pausar</span>
+
                   </button>
+
                   <button id="engineStepBtn" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 transition">
+
                     Paso (+15°)
+
                   </button>
+
                 </div>
+
+
 
                 <!-- RPM slider -->
+
                 <div class="flex items-center gap-2 flex-1 max-w-xs justify-end">
+
                   <span class="text-xs text-slate-400 font-mono">Velocidad:</span>
+
                   <input id="engineSpeedSlider" type="range" min="10" max="200" value="50" class="w-24 sm:w-32 accent-orange-500 bg-slate-800 rounded-lg cursor-pointer">
+
                   <span id="engineRpmLabel" class="text-xs font-mono font-bold text-orange-400 w-16 text-right tabular-nums">50 RPM</span>
+
                 </div>
+
               </div>
+
+
 
               <!-- Direct Stage Jump Buttons -->
+
               <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
+
                 <button class="stage-jump-btn px-2.5 py-2 rounded-lg text-xs font-bold transition border border-blue-500/30 bg-blue-500/10 text-blue-400 hover:bg-blue-500/20" data-deg="0">
+
                   1. Admisión (0°)
+
                 </button>
+
                 <button class="stage-jump-btn px-2.5 py-2 rounded-lg text-xs font-bold transition border border-amber-500/30 bg-amber-500/10 text-amber-400 hover:bg-amber-500/20" data-deg="180">
+
                   2. Compresión (180°)
+
                 </button>
+
                 <button class="stage-jump-btn px-2.5 py-2 rounded-lg text-xs font-bold transition border border-orange-500/30 bg-orange-500/10 text-orange-400 hover:bg-orange-500/20" data-deg="360">
+
                   3. Explosión (360°)
+
                 </button>
+
                 <button class="stage-jump-btn px-2.5 py-2 rounded-lg text-xs font-bold transition border border-slate-500/30 bg-slate-500/10 text-slate-400 hover:bg-slate-500/20" data-deg="540">
+
                   4. Escape (540°)
+
                 </button>
+
               </div>
+
+
 
               <!-- Interactive Angle Scrub Slider -->
+
               <div class="space-y-1 pt-1">
+
                 <div class="flex justify-between text-[10px] text-slate-400 font-mono">
+
                   <span>0° (PMS)</span>
+
                   <span>180° (PMI)</span>
+
                   <span>360° (PMS)</span>
+
                   <span>540° (PMI)</span>
+
                   <span>720° (PMS)</span>
+
                 </div>
+
                 <input id="engineCycleScrubber" type="range" min="0" max="720" step="1" value="0" class="w-full accent-cyan-400 bg-slate-800 rounded-lg cursor-pointer">
+
               </div>
+
             </div>
+
           </div>
+
         </div>
+
+
 
         <!-- Right: Rigid Height Info Card (ZERO Trembling / Shaking) -->
+
         <div class="lg:col-span-5 space-y-4">
+
           <!-- Active Stage Detailed Card with STRICT MIN-HEIGHT -->
+
           <div id="stageInfoCard" class="glass-card rounded-2xl p-5 border-l-4 border-l-blue-500 transition-colors min-h-[300px] flex flex-col justify-between">
+
             <div>
+
               <div class="flex items-center justify-between mb-2">
+
                 <span id="stageCardStepNumber" class="text-[11px] font-mono font-bold tracking-widest uppercase text-blue-400">ETAPA 1 DE 4</span>
+
                 <span id="stageCardAngleSpan" class="text-[11px] font-mono text-slate-400">0° a 180° del cigüeñal</span>
+
               </div>
+
               <h3 id="stageCardTitle" class="text-xl font-bold text-white mb-2 min-h-[1.75rem]">Admisión: Llenado del Cilindro</h3>
+
               <p id="stageCardDescription" class="text-slate-300 text-xs sm:text-sm leading-relaxed min-h-[4.5rem]">
+
                 El pistón desciende desde el Punto Muerto Superior (PMS) hasta el Punto Muerto Inferior (PMI). La válvula de admisión se abre empujada por el árbol de levas, creando un vacío relativo que succiona la mezcla de aire atomizado y gasolina hacia la cámara.
+
               </p>
+
             </div>
+
+
 
             <div class="grid grid-cols-2 gap-2 text-xs font-mono bg-slate-900/80 p-3 rounded-xl border border-slate-800 mt-3">
+
               <div>
+
                 <span class="text-slate-500 block text-[10px] uppercase">Válvula Admisión</span>
+
                 <span id="valvulaAdmisionStatus" class="font-bold text-emerald-400 text-[11px]">ABIERTA</span>
+
               </div>
+
               <div>
+
                 <span class="text-slate-500 block text-[10px] uppercase">Válvula Escape</span>
+
                 <span id="valvulaEscapeStatus" class="font-bold text-rose-400 text-[11px]">CERRADA</span>
+
               </div>
+
               <div>
+
                 <span class="text-slate-500 block text-[10px] uppercase">Movimiento Pistón</span>
+
                 <span id="pistonMotionStatus" class="font-bold text-white text-[11px]">Baja (PMS &rarr; PMI)</span>
+
               </div>
+
               <div>
+
                 <span class="text-slate-500 block text-[10px] uppercase">Presión en Cámara</span>
+
                 <span id="chamberPressureStatus" class="font-bold text-cyan-300 text-[11px]">Depresión (~0.8 bar)</span>
+
               </div>
+
             </div>
+
           </div>
+
+
 
           <!-- Parts of the Engine Explorer -->
+
           <div class="glass-card rounded-2xl p-5">
+
             <h4 class="text-sm font-bold text-white mb-2.5 flex items-center gap-2">
+
               <svg class="w-4 h-4 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+
               </svg>
+
               Anatomía Mecánica Principal
+
             </h4>
+
             <div class="space-y-2 text-xs text-slate-300">
+
               <div class="p-2 rounded-lg bg-slate-900/60 border border-slate-800/80">
+
                 <span class="font-bold text-white">Pistón con 3 Aros:</span> Émbolo forjado con dos aros de compresión y un aro rascador de aceite.
+
               </div>
+
               <div class="p-2 rounded-lg bg-slate-900/60 border border-slate-800/80">
+
                 <span class="font-bold text-white">Biela en 'H':</span> Eslabón estructural que transmite la fuerza del bulón hacia el cigüeñal.
+
               </div>
+
               <div class="p-2 rounded-lg bg-slate-900/60 border border-slate-800/80">
+
                 <span class="font-bold text-white">Cigüeñal y Contrapesos:</span> Eje de rotación que equilibra las fuerzas alternas con contrapesos.
+
               </div>
+
               <div class="p-2 rounded-lg bg-slate-900/60 border border-slate-800/80">
+
                 <span class="font-bold text-white">Árbol de Levas y Válvulas:</span> Abre y cierra los conductos girando a exactamente la mitad de velocidad (1:2).
+
               </div>
+
             </div>
+
+
 
             <!-- Didactic Callout: Only 1 stroke produces work -->
+
             <div class="mt-3 p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-300/90 leading-relaxed">
+
               <strong>💡 Dato Clave:</strong> De los 4 tiempos, <span class="text-amber-200 underline font-semibold">solo la Explosión (Tiempo 3) genera trabajo motriz</span>. Los otros tres tiempos son arrastrados por la inercia del volante.
+
             </div>
+
           </div>
+
         </div>
 
+
+
       </div>
+
     </section>
 
+
+
     <!-- ========================================================================= -->
-    <!-- 2. INERCIA Y MARCOS DE REFERENCIA (SALTO EN EL TRÁILER) -->
-    <!-- ========================================================================= -->
-    <section id="flujo-laminar" class="scroll-mt-24">
-      <div class="border-b border-slate-800 pb-4 mb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
-        <div>
-          <div class="inline-flex items-center gap-2 text-xs font-bold tracking-wider uppercase text-teal-400 mb-1">
-            <span class="w-2 h-2 rounded-full bg-teal-500"></span> Mecánica de Fluidos & Dinámica de Medios Continuos
-          </div>
-          <h2 class="text-2xl sm:text-3xl font-extrabold text-white">
-            2. Flujo Laminar vs. Flujo Turbulento
-          </h2>
-          <p class="text-slate-400 mt-1 max-w-2xl text-xs sm:text-sm">
-            Observa cómo las capas de fluido se desvían alrededor de un ala, cómo aparece una estela y cómo el <strong>Número de Reynolds</strong> cambia el régimen del flujo.
-          </p>
-        </div>
-        <div>
-          <span class="px-3 py-1 bg-teal-500/10 text-teal-300 border border-teal-500/30 rounded-lg text-xs font-mono font-bold">
-            Re = (&rho; &middot; v &middot; D) / &mu;
-          </span>
-        </div>
-      </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-
-        <!-- Interactive Laminar Canvas Simulation -->
-        <div class="lg:col-span-8 space-y-4">
-          <div class="glass-card rounded-2xl p-4 sm:p-5">
-
-            <!-- Mode Switcher -->
-            <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
-              <div class="flex items-center gap-1.5 bg-slate-900/90 p-1 rounded-xl border border-slate-800">
-                <span class="px-3 py-1.5 rounded-lg text-xs font-bold bg-teal-500 text-slate-950 shadow">
-                  ✈️ Túnel de Flujo alrededor de un Ala
-                </span>
-              </div>
-
-              <div class="flex items-center gap-2 text-xs font-mono">
-                <span class="text-slate-400">Régimen:</span>
-                <span id="reynoldsRegimeBadge" class="w-32 text-center py-1 rounded-md bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/30 inline-block tabular-nums">
-                  Laminar (Re &lt; 2300)
-                </span>
-              </div>
-            </div>
-
-            <!-- Canvas Viewport -->
-            <div class="relative w-full aspect-[16/9] min-h-[280px] sm:min-h-[350px] bg-slate-950 rounded-xl border border-slate-800 overflow-hidden shadow-inner">
-              <canvas id="laminarCanvas" width="800" height="420" class="w-full h-full object-cover"></canvas>
-
-              <!-- Telemetry Overlay on Canvas -->
-              <div class="absolute top-3 left-3 bg-slate-900/85 backdrop-blur-md px-3 py-2 rounded-xl border border-slate-700/60 font-mono text-[11px] space-y-1">
-                <div class="flex items-center justify-between gap-3">
-                  <span class="text-slate-400">Número de Reynolds:</span>
-                  <span id="hudReynoldsNumber" class="text-teal-400 font-bold tabular-nums w-16 text-right">Re = 1200</span>
-                </div>
-                <div class="flex items-center justify-between gap-3">
-                  <span class="text-slate-400">Viscosidad (&mu;):</span>
-                  <span id="hudFluidViscosity" class="text-cyan-400 font-bold tabular-nums w-16 text-right">1.0 mPa&middot;s</span>
-                </div>
-                <div class="flex items-center justify-between gap-3">
-                  <span class="text-slate-400">Arrastre (Cd):</span>
-                  <span id="hudDragCoeff" class="text-amber-400 font-bold tabular-nums w-16 text-right">0.42</span>
-                </div>
-              </div>
-
-            </div>
-
-            <!-- Controls: Reynolds slider, fluids & dye injector -->
-            <div class="mt-4 pt-3 border-t border-slate-800/80 space-y-3">
-              <div class="space-y-1">
-                <div class="flex justify-between text-xs">
-                  <span class="text-slate-300 font-bold">Número de Reynolds (Re): Velocidad de Flujo &harr; Inercia vs Viscosidad</span>
-                  <span id="reynoldsSliderLabel" class="font-mono text-teal-400 font-bold tabular-nums">Re = 1200</span>
-                </div>
-                <input id="reynoldsSlider" type="range" min="100" max="7500" step="50" value="1200" class="w-full accent-teal-400 bg-slate-800 rounded-lg cursor-pointer">
-                <div class="flex justify-between text-[10px] font-mono text-slate-500">
-                  <span class="text-emerald-400">Re &lt; 2,000 (Laminar puro)</span>
-                  <span class="text-amber-400">2,300 - 4,000 (Transición)</span>
-                  <span class="text-rose-400">&gt; 4,000 (Turbulento caótico)</span>
-                </div>
-              </div>
-
-              <!-- Fluid Presets -->
-              <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
-                <div class="flex flex-wrap items-center gap-1.5">
-                  <span class="text-xs text-slate-400 font-semibold mr-1">Fluido:</span>
-                  <button class="fluid-btn px-2.5 py-1 rounded-lg text-xs bg-teal-500/20 border border-teal-500/40 text-teal-300 font-bold transition" data-visc="1.0" data-name="Agua Dulce">
-                    💧 Agua
-                  </button>
-                  <button class="fluid-btn px-2.5 py-1 rounded-lg text-xs bg-slate-900 border border-slate-800 text-slate-300 hover:text-white transition" data-visc="80.0" data-name="Aceite Motor">
-                    🛢️ Aceite
-                  </button>
-                  <button class="fluid-btn px-2.5 py-1 rounded-lg text-xs bg-slate-900 border border-slate-800 text-slate-300 hover:text-white transition" data-visc="950.0" data-name="Glicerina / Miel">
-                    🍯 Glicerina (Muy viscoso)
-                  </button>
-                  <button class="fluid-btn px-2.5 py-1 rounded-lg text-xs bg-slate-900 border border-slate-800 text-slate-300 hover:text-white transition" data-visc="0.018" data-name="Aire Atmosférico">
-                    💨 Aire
-                  </button>
-                </div>
-
-                <!-- Add Dye Stream Button -->
-                <button id="injectDyeBtn" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-slate-700 transition flex items-center gap-1.5 shadow">
-                  🌈 Inyectar Tinte Colorante
-                </button>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- Right Side: Scientific Breakdown of Laminar Flow -->
-        <div class="lg:col-span-4 space-y-4">
-          <div class="glass-card rounded-2xl p-5">
-            <h3 class="text-base font-bold text-white mb-2.5 flex items-center gap-2">
-              <span class="text-teal-400 text-lg">🌊</span> Principios de Flujo
-            </h3>
-
-            <div class="space-y-2.5 text-xs">
-              <div class="p-2.5 rounded-xl bg-teal-500/10 border border-teal-500/20">
-                <div class="font-bold text-teal-300 text-sm mb-0.5">1. ¿Qué es el Flujo Laminar?</div>
-                Las partículas del fluido se mueven en <strong>láminas paralelas ordenadas</strong>, deslizándose suavemente unas sobre otras sin cruzarse ni mezclarse transversalmente. Las líneas de corriente son estables y predecibles.
-              </div>
-
-              <div class="p-2.5 rounded-xl bg-slate-900/60 border border-slate-800">
-                <div class="font-bold text-slate-200 text-sm mb-0.5">2. El Número de Reynolds (Re)</div>
-                Mide la relación entre las <em>fuerzas de inercia</em> (que buscan desordenar el fluido) y las <em>fuerzas viscosas</em> (que amortiguan el caos):
-                <div class="font-mono text-[11px] text-cyan-300 mt-1">
-                  Re &lt; 2,300 &rarr; Laminar<br>
-                  Re &gt; 4,000 &rarr; Turbulento
-                </div>
-              </div>
-
-              <div class="p-2.5 rounded-xl bg-slate-900/60 border border-slate-800">
-                <div class="font-bold text-amber-300 text-sm mb-0.5">3. Flujo sobre un ala y estela</div>
-                El borde de ataque redondeado separa las capas de fluido y las guía sobre el perfil. Si el gradiente de presión se vuelve adverso, la capa límite puede separarse y dejar una <strong>estela</strong> más ancha y oscilante detrás del borde de salida. Esta vista es cualitativa: no calcula sustentación exacta.
-              </div>
-
-              <div class="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-200/90 leading-relaxed">
-                <strong>🌀 Reversibilidad Temporal (Stokes):</strong> A muy bajo Reynolds ($Re \ll 1$, como en la glicerina), las fuerzas viscosas dominan y las trayectorias se vuelven suaves, predecibles y poco propensas a formar una estela turbulenta.
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
 
   </main>
-
-  <!-- ================= FOOTER ================= -->
-  <footer class="border-t border-slate-800/80 py-10 bg-slate-950 text-slate-400 text-xs">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-      <div>
-        <div class="font-bold text-white text-sm">Física & Mecánica Interactiva</div>
-        <p class="text-slate-500 mt-0.5">Plataforma educativa con simulaciones en tiempo real para ciencia, ingeniería y aeronáutica.</p>
-      </div>
-      <div class="flex items-center gap-4 text-slate-400">
-        <span>HTML5 Canvas & Tailwind CSS</span>
-        <span>&bull;</span>
-        <a href="#hero" class="text-cyan-400 hover:underline">Volver arriba &uarr;</a>
-      </div>
-    </div>
+  <footer class="border-t border-slate-800/80 bg-[#0f1219] py-6 text-center text-xs text-slate-500">
+    <p>Motor 4T ? Simulaci?n educativa del ciclo Otto con HTML5 Canvas.</p>
   </footer>
-
-  <!-- ================= JAVASCRIPT SIMULATION LOGIC ================= -->
   <script>
-    /* ========================================================================= */
-    /* GLOBAL MOBILE MENU                                                        */
-    /* ========================================================================= */
-    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-    const mobileMenu = document.getElementById('mobileMenu');
-    if (mobileMenuBtn && mobileMenu) {
-      mobileMenuBtn.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
-      });
-      mobileMenu.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
-      });
-    }
+    /* 1. MOTOR A PISTÓN DE 4 TIEMPOS SIMULATION (HIGH QUALITY, ZERO JITTER)     */
 
     /* ========================================================================= */
-    /* 1. MOTOR A PISTÓN DE 4 TIEMPOS SIMULATION (HIGH QUALITY, ZERO JITTER)     */
-    /* ========================================================================= */
+
     (function initEngine() {
+
       const canvas = document.getElementById('engineCanvas');
+
       if (!canvas) return;
+
       const ctx = canvas.getContext('2d');
 
+
+
       let isPlaying = true;
+
       let crankDeg = 0; // 0 to 720 degrees
+
       let rpm = 50;
+
       let lastTime = performance.now();
 
+
+
       // UI References
+
       const strokeBadge = document.getElementById('strokeBadge');
+
       const crankAngleDisplay = document.getElementById('crankAngleDisplay');
+
       const scrubber = document.getElementById('engineCycleScrubber');
+
       const playPauseBtn = document.getElementById('enginePlayPauseBtn');
+
       const playText = document.getElementById('enginePlayText');
+
       const speedSlider = document.getElementById('engineSpeedSlider');
+
       const rpmLabel = document.getElementById('engineRpmLabel');
+
       const slowMoBtn = document.getElementById('engineSlowMoBtn');
+
       const resetBtn = document.getElementById('engineResetBtn');
+
       const stepBtn = document.getElementById('engineStepBtn');
+
       const sparkFlashOverlay = document.getElementById('sparkFlashOverlay');
 
+
+
       const stageInfoCard = document.getElementById('stageInfoCard');
+
       const stageCardStepNumber = document.getElementById('stageCardStepNumber');
+
       const stageCardAngleSpan = document.getElementById('stageCardAngleSpan');
+
       const stageCardTitle = document.getElementById('stageCardTitle');
+
       const stageCardDescription = document.getElementById('stageCardDescription');
+
       const valvulaAdmisionStatus = document.getElementById('valvulaAdmisionStatus');
+
       const valvulaEscapeStatus = document.getElementById('valvulaEscapeStatus');
+
       const pistonMotionStatus = document.getElementById('pistonMotionStatus');
+
       const chamberPressureStatus = document.getElementById('chamberPressureStatus');
 
+
+
       // Geometry & Kinematics
+
       const cx = 250;      // Crank center X
+
       const cy = 390;      // Crank center Y
+
       const crankR = 54;   // Crank radius
+
       const conrodL = 170; // Connecting rod length
+
       const pistonW = 126; // Piston width
+
       const pistonH = 72;  // Piston height
+
       const cylinderTopY = 115; // Cylinder head top
 
+
+
       // Particles for fuel mist and combustion embers
+
       const mistParticles = [];
+
       const emberParticles = [];
 
+
+
       function getStageData(deg) {
+
         const normDeg = ((deg % 720) + 720) % 720;
+
         if (normDeg < 180) {
+
           return {
+
             stage: 1,
+
             name: "1. Admisión",
+
             colorClass: "bg-blue-500",
+
             borderClass: "border-l-blue-500",
+
             stepText: "ETAPA 1 DE 4",
+
             angleSpan: "0° a 180° del cigüeñal",
+
             title: "Admisión: Llenado del Cilindro",
+
             desc: "El pistón desciende desde el Punto Muerto Superior (PMS) hasta el Punto Muerto Inferior (PMI). La válvula de admisión se abre empujada por el árbol de levas, creando un vacío relativo que succiona la mezcla fresca de aire atomizado y gasolina hacia la cámara.",
+
             valvAdm: "ABIERTA",
+
             valvAdmColor: "text-emerald-400",
+
             valvEsc: "CERRADA",
+
             valvEscColor: "text-rose-400",
+
             motion: "Baja (PMS \u2192 PMI)",
+
             pressure: "Depresión (~0.8 bar)"
+
           };
+
         } else if (normDeg < 360) {
+
           return {
+
             stage: 2,
+
             name: "2. Compresión",
+
             colorClass: "bg-amber-500",
+
             borderClass: "border-l-amber-500",
+
             stepText: "ETAPA 2 DE 4",
+
             angleSpan: "180° a 360° del cigüeñal",
+
             title: "Compresión: Elevando la Presión",
+
             desc: "Ambas válvulas permanecen herméticamente cerradas. El pistón asciende impulsado por la inercia del volante motor, reduciendo el volumen de la mezcla entre 8 y 12 veces, aumentando drásticamente la presión y la temperatura.",
+
             valvAdm: "CERRADA",
+
             valvAdmColor: "text-rose-400",
+
             valvEsc: "CERRADA",
+
             valvEscColor: "text-rose-400",
+
             motion: "Sube (PMI \u2192 PMS)",
+
             pressure: "Alta (~12 a 16 bar)"
+
           };
+
         } else if (normDeg < 540) {
+
           return {
+
             stage: 3,
+
             name: "3. Explosión",
+
             colorClass: "bg-orange-500",
+
             borderClass: "border-l-orange-500",
+
             stepText: "ETAPA 3 DE 4 (¡TRABAJO ÚTIL!)",
+
             angleSpan: "360° a 540° del cigüeñal",
+
             title: "Explosión: Expansión y Potencia",
+
             desc: "Al llegar el pistón al PMS, la bujía genera un arco eléctrico de 25,000 V. La mezcla se inflama instantáneamente; la violenta expansión térmica genera un pico de presión enorme que empuja el pistón hacia abajo con gran fuerza.",
+
             valvAdm: "CERRADA",
+
             valvAdmColor: "text-rose-400",
+
             valvEsc: "CERRADA",
+
             valvEscColor: "text-rose-400",
+
             motion: "Empujado (PMS \u2192 PMI)",
+
             pressure: "Pico Máximo (~50 bar)"
+
           };
+
         } else {
+
           return {
+
             stage: 4,
+
             name: "4. Escape",
+
             colorClass: "bg-slate-500",
+
             borderClass: "border-l-slate-500",
+
             stepText: "ETAPA 4 DE 4",
+
             angleSpan: "540° a 720° del cigüeñal",
+
             title: "Escape: Expulsión de Gases",
+
             desc: "La válvula de escape se abre. El pistón vuelve a subir por inercia desalojando los gases quemados hacia el colector y silenciador, dejando el cilindro despejado y listo para un nuevo ciclo de admisión.",
+
             valvAdm: "CERRADA",
+
             valvAdmColor: "text-rose-400",
+
             valvEsc: "ABIERTA",
+
             valvEscColor: "text-emerald-400",
+
             motion: "Sube (PMI \u2192 PMS)",
+
             pressure: "Baja (~1.2 bar)"
+
           };
+
         }
+
       }
+
+
 
       let currentStageId = -1;
 
+
+
       function updateUI(deg) {
+
         const normDeg = ((deg % 720) + 720) % 720;
+
         const data = getStageData(normDeg);
 
+
+
         // Fixed-width formatting prevents ANY jitter
+
         const degStr = Math.round(normDeg).toString().padStart(3, '0');
+
         crankAngleDisplay.textContent = `Cigüeñal: ${degStr}°`;
+
         scrubber.value = Math.round(normDeg);
 
+
+
         if (currentStageId !== data.stage) {
+
           currentStageId = data.stage;
+
           strokeBadge.className = `w-32 py-1 rounded-full text-xs font-bold uppercase tracking-wide ${data.colorClass} text-white shadow-md text-center inline-block`;
+
           strokeBadge.textContent = data.name;
 
+
+
           stageInfoCard.className = `glass-card rounded-2xl p-5 border-l-4 ${data.borderClass} transition-colors min-h-[300px] flex flex-col justify-between`;
+
           stageCardStepNumber.textContent = data.stepText;
+
           stageCardAngleSpan.textContent = data.angleSpan;
+
           stageCardTitle.textContent = data.title;
+
           stageCardDescription.textContent = data.desc;
+
           valvulaAdmisionStatus.textContent = data.valvAdm;
+
           valvulaAdmisionStatus.className = `font-bold ${data.valvAdmColor} text-[11px]`;
+
           valvulaEscapeStatus.textContent = data.valvEsc;
+
           valvulaEscapeStatus.className = `font-bold ${data.valvEscColor} text-[11px]`;
+
           pistonMotionStatus.textContent = data.motion;
+
           chamberPressureStatus.textContent = data.pressure;
+
         }
+
       }
+
+
 
       function drawEngine(deg) {
+
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+
+
         const rad = (deg * Math.PI) / 180;
+
         const normDeg = ((deg % 720) + 720) % 720;
 
+
+
         // Kinematics:
+
         // Crankpin rotates around (cx, cy)
+
         const crankPinX = cx + crankR * Math.sin(rad);
+
         const crankPinY = cy - crankR * Math.cos(rad);
+
+
 
         // Piston wrist pin stays on X = cx
+
         const dx = crankPinX - cx;
+
         const wristPinY = crankPinY - Math.sqrt(Math.max(0, conrodL * conrodL - dx * dx));
+
         const pistonTopY = wristPinY - 28;
+
+
 
         // Camshaft angle = crankDeg / 2 (1 cam rotation per 2 crank rotations)
+
         const camRad = rad / 2;
 
+
+
         // Valve lift curves (0 to 15 pixels)
+
         let intakeLift = 0;
+
         let exhaustLift = 0;
+
         if (normDeg >= 0 && normDeg <= 180) {
+
           intakeLift = Math.sin((normDeg / 180) * Math.PI) * 15;
+
         }
+
         if (normDeg >= 540 && normDeg <= 720) {
+
           exhaustLift = Math.sin(((normDeg - 540) / 180) * Math.PI) * 15;
+
         }
+
+
 
         // ================= 1. CYLINDER BORE INTERIOR & HONING MARKS =================
+
         ctx.fillStyle = '#0a0f1d';
+
         ctx.fillRect(cx - pistonW / 2, cylinderTopY, pistonW, cy - cylinderTopY);
 
+
+
         // Cylinder wall cross-hatch honing pattern
+
         ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
+
         ctx.lineWidth = 1;
+
         for (let hy = cylinderTopY; hy < cy - 40; hy += 12) {
+
           ctx.beginPath();
+
           ctx.moveTo(cx - pistonW / 2, hy);
+
           ctx.lineTo(cx + pistonW / 2, hy + 24);
+
           ctx.moveTo(cx + pistonW / 2, hy);
+
           ctx.lineTo(cx - pistonW / 2, hy + 24);
+
           ctx.stroke();
+
         }
+
+
 
         // ================= 2. GAS DYNAMICS IN COMBUSTION CHAMBER =================
+
         const chamberH = Math.max(12, pistonTopY - cylinderTopY);
+
         let gasGrad = ctx.createLinearGradient(0, cylinderTopY, 0, pistonTopY);
 
+
+
         if (normDeg < 180) {
+
           // Intake: Cool fresh cyan fuel mist
+
           gasGrad.addColorStop(0, 'rgba(56, 189, 248, 0.55)');
+
           gasGrad.addColorStop(1, 'rgba(56, 189, 248, 0.15)');
+
         } else if (normDeg < 355) {
+
           // Compression: Warming amber gas
+
           const t = (normDeg - 180) / 175;
+
           gasGrad.addColorStop(0, `rgba(251, 191, 36, ${0.35 + t * 0.45})`);
+
           gasGrad.addColorStop(1, `rgba(245, 158, 11, ${0.2 + t * 0.4})`);
+
         } else if (normDeg >= 355 && normDeg <= 440) {
+
           // Explosion: Brilliant fiery core with expanding flame front
+
           gasGrad.addColorStop(0, 'rgba(255, 255, 255, 0.98)');
+
           gasGrad.addColorStop(0.25, 'rgba(250, 204, 21, 0.95)');
+
           gasGrad.addColorStop(0.6, 'rgba(249, 115, 22, 0.85)');
+
           gasGrad.addColorStop(1, 'rgba(220, 38, 38, 0.65)');
+
         } else if (normDeg < 540) {
+
           // Power stroke expansion: Deep orange cooling gas
+
           gasGrad.addColorStop(0, 'rgba(234, 88, 12, 0.55)');
+
           gasGrad.addColorStop(1, 'rgba(154, 52, 18, 0.25)');
+
         } else {
+
           // Exhaust: Smoky gray plume
+
           gasGrad.addColorStop(0, 'rgba(148, 163, 184, 0.45)');
+
           gasGrad.addColorStop(1, 'rgba(71, 85, 105, 0.2)');
+
         }
+
+
 
         ctx.fillStyle = gasGrad;
+
         ctx.fillRect(cx - pistonW / 2 + 1, cylinderTopY, pistonW - 2, chamberH);
 
+
+
         // ================= 3. INTAKE & EXHAUST MANIFOLD RUNNERS =================
+
         // Intake Runner (Left, with air filter / injector)
+
         ctx.fillStyle = '#1e293b';
+
         ctx.beginPath();
+
         ctx.moveTo(cx - 95, 55);
+
         ctx.lineTo(cx - 36, 55);
+
         ctx.lineTo(cx - 36, cylinderTopY);
+
         ctx.lineTo(cx - 56, cylinderTopY);
+
         ctx.lineTo(cx - 95, 92);
+
         ctx.closePath();
+
         ctx.fill();
+
         ctx.strokeStyle = '#38bdf8';
+
         ctx.lineWidth = 1.5;
+
         ctx.stroke();
+
+
 
         // Exhaust Runner (Right, header pipe)
+
         ctx.fillStyle = '#1e293b';
+
         ctx.beginPath();
+
         ctx.moveTo(cx + 95, 55);
+
         ctx.lineTo(cx + 36, 55);
+
         ctx.lineTo(cx + 36, cylinderTopY);
+
         ctx.lineTo(cx + 56, cylinderTopY);
+
         ctx.lineTo(cx + 95, 92);
+
         ctx.closePath();
+
         ctx.fill();
+
         ctx.strokeStyle = '#94a3b8';
+
         ctx.lineWidth = 1.5;
+
         ctx.stroke();
+
+
 
         // Fuel Injector Nozzle on left runner
+
         ctx.fillStyle = '#64748b';
+
         ctx.fillRect(cx - 82, 42, 14, 22);
+
         ctx.fillStyle = '#38bdf8';
+
         ctx.fillRect(cx - 78, 64, 6, 6);
 
+
+
         // If intake valve open: emit mist particles
+
         if (intakeLift > 2) {
+
           for (let m = 0; m < 2; m++) {
+
             mistParticles.push({
+
               x: cx - 46 + (Math.random() * 12 - 6),
+
               y: cylinderTopY + 4,
+
               vx: (Math.random() - 0.2) * 2,
+
               vy: Math.random() * 4 + 2,
+
               life: 1.0
+
             });
+
           }
+
         }
+
+
 
         // Render mist particles
+
         for (let i = mistParticles.length - 1; i >= 0; i--) {
+
           const pt = mistParticles[i];
+
           pt.x += pt.vx;
+
           pt.y += pt.vy;
+
           pt.life -= 0.04;
+
           if (pt.life <= 0 || pt.y >= pistonTopY) {
+
             mistParticles.splice(i, 1);
+
             continue;
+
           }
+
           ctx.fillStyle = `rgba(56, 189, 248, ${pt.life * 0.7})`;
+
           ctx.beginPath();
+
           ctx.arc(pt.x, pt.y, 2.5 * pt.life, 0, Math.PI * 2);
+
           ctx.fill();
+
         }
+
+
 
         // ================= 4. OVERHEAD CAMSHAFT & SPRINGS =================
+
         const inVx = cx - 46;
+
         const exVx = cx + 46;
+
         const camY = 32;
 
+
+
         // Rotating camshaft lobes (spinning at half crank speed)
+
         // Intake cam lobe
+
         ctx.save();
+
         ctx.translate(inVx, camY);
+
         ctx.rotate(camRad);
+
         ctx.fillStyle = '#94a3b8';
+
         ctx.beginPath();
+
         ctx.arc(0, 0, 11, 0, Math.PI * 2);
+
         ctx.fill();
+
         // Cam lobe nose
+
         ctx.fillStyle = '#cbd5e1';
+
         ctx.beginPath();
+
         ctx.moveTo(-10, 0);
+
         ctx.lineTo(0, 18);
+
         ctx.lineTo(10, 0);
+
         ctx.closePath();
+
         ctx.fill();
+
         ctx.restore();
+
+
 
         // Exhaust cam lobe
+
         ctx.save();
+
         ctx.translate(exVx, camY);
+
         ctx.rotate(camRad + Math.PI / 2);
+
         ctx.fillStyle = '#94a3b8';
+
         ctx.beginPath();
+
         ctx.arc(0, 0, 11, 0, Math.PI * 2);
+
         ctx.fill();
+
         // Cam lobe nose
+
         ctx.fillStyle = '#cbd5e1';
+
         ctx.beginPath();
+
         ctx.moveTo(-10, 0);
+
         ctx.lineTo(0, 18);
+
         ctx.lineTo(10, 0);
+
         ctx.closePath();
+
         ctx.fill();
+
         ctx.restore();
+
+
 
         // VALVES WITH HELICAL SPRINGS
+
         // Intake Valve
+
         const inVy = cylinderTopY + intakeLift;
+
         ctx.strokeStyle = '#cbd5e1';
+
         ctx.lineWidth = 4;
+
         ctx.beginPath();
+
         ctx.moveTo(inVx, camY + 12);
+
         ctx.lineTo(inVx, inVy);
+
         ctx.stroke();
+
+
 
         // Helical spring around intake valve stem
+
         ctx.strokeStyle = '#64748b';
+
         ctx.lineWidth = 2;
+
         ctx.beginPath();
+
         const springTopY = camY + 20;
+
         const springBottomY = cylinderTopY - 10;
+
         const springLoops = 5;
+
         const loopH = (springBottomY - springTopY) / springLoops;
+
         for (let s = 0; s < springLoops; s++) {
+
           const sy = springTopY + s * loopH;
+
           ctx.moveTo(inVx - 7, sy);
+
           ctx.lineTo(inVx + 7, sy + loopH * 0.5);
+
           ctx.lineTo(inVx - 7, sy + loopH);
+
         }
+
         ctx.stroke();
+
+
 
         // Intake valve disk
+
         ctx.fillStyle = intakeLift > 2 ? '#38bdf8' : '#e2e8f0';
+
         ctx.beginPath();
+
         ctx.ellipse(inVx, inVy, 15, 5, 0, 0, Math.PI * 2);
+
         ctx.fill();
+
         ctx.strokeStyle = '#94a3b8';
+
         ctx.lineWidth = 1.5;
+
         ctx.stroke();
+
+
 
         // Exhaust Valve
+
         const exVy = cylinderTopY + exhaustLift;
+
         ctx.strokeStyle = '#cbd5e1';
+
         ctx.lineWidth = 4;
+
         ctx.beginPath();
+
         ctx.moveTo(exVx, camY + 12);
+
         ctx.lineTo(exVx, exVy);
+
         ctx.stroke();
+
+
 
         // Helical spring around exhaust valve stem
+
         ctx.strokeStyle = '#64748b';
+
         ctx.lineWidth = 2;
+
         ctx.beginPath();
+
         for (let s = 0; s < springLoops; s++) {
+
           const sy = springTopY + s * loopH;
+
           ctx.moveTo(exVx - 7, sy);
+
           ctx.lineTo(exVx + 7, sy + loopH * 0.5);
+
           ctx.lineTo(exVx - 7, sy + loopH);
+
         }
+
         ctx.stroke();
+
+
 
         // Exhaust valve disk
+
         ctx.fillStyle = exhaustLift > 2 ? '#f97316' : '#e2e8f0';
+
         ctx.beginPath();
+
         ctx.ellipse(exVx, exVy, 15, 5, 0, 0, Math.PI * 2);
+
         ctx.fill();
+
         ctx.strokeStyle = '#94a3b8';
+
         ctx.lineWidth = 1.5;
+
         ctx.stroke();
+
+
 
         // ================= 5. SPARK PLUG & SPARK EVENT =================
+
         // White ceramic insulator
+
         ctx.fillStyle = '#f8fafc';
+
         ctx.fillRect(cx - 7, cylinderTopY - 45, 14, 28);
+
         ctx.fillStyle = '#64748b';
+
         ctx.fillRect(cx - 9, cylinderTopY - 17, 18, 17);
 
+
+
         // Plug electrodes
+
         ctx.strokeStyle = '#e2e8f0';
+
         ctx.lineWidth = 2.5;
+
         ctx.beginPath();
+
         ctx.moveTo(cx, cylinderTopY);
+
         ctx.lineTo(cx, cylinderTopY + 8);
+
         ctx.stroke();
+
         ctx.beginPath();
+
         ctx.moveTo(cx - 6, cylinderTopY);
+
         ctx.lineTo(cx - 6, cylinderTopY + 11);
+
         ctx.lineTo(cx, cylinderTopY + 11);
+
         ctx.stroke();
+
+
 
         // ELECTRIC SPARK AT 360° (PMS Ignition)
+
         if (normDeg >= 356 && normDeg <= 372) {
+
           ctx.strokeStyle = '#67e8f9';
+
           ctx.shadowColor = '#38bdf8';
+
           ctx.shadowBlur = 18;
+
           ctx.lineWidth = 3;
+
           ctx.beginPath();
+
           ctx.moveTo(cx, cylinderTopY + 8);
+
           ctx.lineTo(cx + (Math.random() * 6 - 3), cylinderTopY + 9.5);
+
           ctx.lineTo(cx, cylinderTopY + 11);
+
           ctx.stroke();
+
           ctx.shadowBlur = 0; // Reset
 
+
+
           // Embers
+
           for (let p = 0; p < 4; p++) {
+
             emberParticles.push({
+
               x: cx + (Math.random() * 30 - 15),
+
               y: cylinderTopY + 12 + Math.random() * 10,
+
               vx: (Math.random() - 0.5) * 5,
+
               vy: Math.random() * 4 + 1,
+
               life: 1.0
+
             });
+
           }
+
         }
+
+
 
         // Render embers
+
         for (let i = emberParticles.length - 1; i >= 0; i--) {
+
           const pt = emberParticles[i];
+
           pt.x += pt.vx;
+
           pt.y += pt.vy;
+
           pt.life -= 0.05;
+
           if (pt.life <= 0 || pt.y >= pistonTopY) {
+
             emberParticles.splice(i, 1);
+
             continue;
+
           }
+
           ctx.fillStyle = pt.life > 0.5 ? '#facc15' : '#f97316';
+
           ctx.beginPath();
+
           ctx.arc(pt.x, pt.y, 3 * pt.life, 0, Math.PI * 2);
+
           ctx.fill();
+
         }
+
+
 
         // ================= 6. CYLINDER WALLS & COOLING FINS =================
+
         const wallT = 14;
+
         ctx.fillStyle = '#334155';
+
         ctx.fillRect(cx - pistonW / 2 - wallT, cylinderTopY, wallT, 240);
+
         ctx.fillRect(cx + pistonW / 2, cylinderTopY, wallT, 240);
 
+
+
         // Exterior cooling fins
+
         ctx.fillStyle = '#475569';
+
         for (let fy = cylinderTopY + 15; fy < cylinderTopY + 225; fy += 20) {
+
           ctx.fillRect(cx - pistonW / 2 - wallT - 14, fy, 14, 5);
+
           ctx.fillRect(cx + pistonW / 2 + wallT, fy, 14, 5);
+
         }
+
+
 
         // ================= 7. CRANKCASE & CRANKSHAFT =================
+
         ctx.fillStyle = '#0f172a';
+
         ctx.beginPath();
+
         ctx.arc(cx, cy, crankR + 28, 0, Math.PI * 2);
+
         ctx.fill();
+
         ctx.strokeStyle = '#1e293b';
+
         ctx.lineWidth = 3;
+
         ctx.stroke();
+
+
 
         // Crankshaft counterweight (Contrapeso de cigüeñal)
+
         ctx.save();
+
         ctx.translate(cx, cy);
+
         ctx.rotate(rad);
+
         ctx.fillStyle = '#475569';
+
         ctx.beginPath();
+
         ctx.arc(0, 0, crankR + 18, Math.PI * 0.6, Math.PI * 1.4);
+
         ctx.lineTo(0, 0);
+
         ctx.closePath();
+
         ctx.fill();
+
         ctx.strokeStyle = '#64748b';
+
         ctx.lineWidth = 2.5;
+
         ctx.stroke();
+
+
 
         // Central main bearing journal
+
         ctx.fillStyle = '#94a3b8';
+
         ctx.beginPath();
+
         ctx.arc(0, 0, 18, 0, Math.PI * 2);
+
         ctx.fill();
+
         ctx.strokeStyle = '#cbd5e1';
+
         ctx.lineWidth = 2;
+
         ctx.stroke();
+
         ctx.restore();
+
+
 
         // ================= 8. CONNECTING ROD (BIELA EN 'H') =================
+
         ctx.save();
+
         // Main rod body
+
         ctx.strokeStyle = '#64748b';
+
         ctx.lineWidth = 14;
+
         ctx.lineCap = 'round';
+
         ctx.beginPath();
+
         ctx.moveTo(crankPinX, crankPinY);
+
         ctx.lineTo(cx, wristPinY);
+
         ctx.stroke();
+
+
 
         // Inner H-beam groove
+
         ctx.strokeStyle = '#334155';
+
         ctx.lineWidth = 5;
+
         ctx.beginPath();
+
         ctx.moveTo(crankPinX, crankPinY);
+
         ctx.lineTo(cx, wristPinY);
+
         ctx.stroke();
+
+
 
         // Big-end journal (head on crankpin) with two clamping bolts
+
         ctx.fillStyle = '#94a3b8';
+
         ctx.beginPath();
+
         ctx.arc(crankPinX, crankPinY, 15, 0, Math.PI * 2);
+
         ctx.fill();
+
         ctx.strokeStyle = '#cbd5e1';
+
         ctx.lineWidth = 2;
+
         ctx.stroke();
+
+
 
         // Big end bolts
+
         ctx.fillStyle = '#1e293b';
+
         ctx.beginPath();
+
         ctx.arc(crankPinX - 8, crankPinY, 2.5, 0, Math.PI * 2);
+
         ctx.arc(crankPinX + 8, crankPinY, 2.5, 0, Math.PI * 2);
+
         ctx.fill();
+
+
 
         // Small-end wrist pin bushing
+
         ctx.fillStyle = '#d97706'; // Bronze bushing
+
         ctx.beginPath();
+
         ctx.arc(cx, wristPinY, 11, 0, Math.PI * 2);
+
         ctx.fill();
+
         ctx.fillStyle = '#e2e8f0';
+
         ctx.beginPath();
+
         ctx.arc(cx, wristPinY, 7, 0, Math.PI * 2);
+
         ctx.fill();
+
         ctx.restore();
 
+
+
         // ================= 9. PISTON (PISTÓN FORJADO) =================
+
         const pLeft = cx - pistonW / 2 + 2;
+
         const pW = pistonW - 4;
 
+
+
         // Piston Crown Metallic Gradient
+
         const pGrad = ctx.createLinearGradient(pLeft, pistonTopY, pLeft + pW, pistonTopY);
+
         pGrad.addColorStop(0, '#64748b');
+
         pGrad.addColorStop(0.5, '#e2e8f0');
+
         pGrad.addColorStop(1, '#475569');
+
         ctx.fillStyle = pGrad;
 
+
+
         // Piston body
+
         ctx.beginPath();
+
         ctx.rect(pLeft, pistonTopY, pW, pistonH);
+
         ctx.fill();
+
         ctx.strokeStyle = '#94a3b8';
+
         ctx.lineWidth = 1.5;
+
         ctx.stroke();
+
+
 
         // 3 Distinct Piston Rings with cross grooves
+
         ctx.fillStyle = '#0f172a';
+
         ctx.fillRect(pLeft - 1, pistonTopY + 7, pW + 2, 2.5); // 1st compression ring
+
         ctx.fillRect(pLeft - 1, pistonTopY + 15, pW + 2, 2.5); // 2nd scraper ring
+
         ctx.fillRect(pLeft - 1, pistonTopY + 23, pW + 2, 2.5); // 3rd oil control ring
 
+
+
         // Piston crown valve reliefs
+
         ctx.fillStyle = '#475569';
+
         ctx.beginPath();
+
         ctx.arc(cx - 40, pistonTopY + 2, 12, 0, Math.PI);
+
         ctx.arc(cx + 40, pistonTopY + 2, 12, 0, Math.PI);
+
         ctx.fill();
+
+
 
         // Wrist pin hole & circlip
+
         ctx.fillStyle = '#334155';
+
         ctx.beginPath();
+
         ctx.arc(cx, wristPinY, 8, 0, Math.PI * 2);
+
         ctx.fill();
+
+
 
         // Downward Force Arrows during Combustion
+
         if (normDeg >= 365 && normDeg <= 520) {
+
           const arrowAlpha = Math.sin(((normDeg - 365) / 155) * Math.PI);
+
           ctx.strokeStyle = `rgba(249, 115, 22, ${arrowAlpha})`;
+
           ctx.fillStyle = `rgba(249, 115, 22, ${arrowAlpha})`;
+
           ctx.lineWidth = 4;
+
           const ay = pistonTopY + 14;
+
           [-30, 0, 30].forEach(ox => {
+
             ctx.beginPath();
+
             ctx.moveTo(cx + ox, ay);
+
             ctx.lineTo(cx + ox, ay + 28);
+
             ctx.stroke();
+
             // Arrowhead
+
             ctx.beginPath();
+
             ctx.moveTo(cx + ox - 6, ay + 28);
+
             ctx.lineTo(cx + ox + 6, ay + 28);
+
             ctx.lineTo(cx + ox, ay + 38);
+
             ctx.closePath();
+
             ctx.fill();
+
           });
+
         }
+
+
 
         // ================= 10. LABELS: PMS & PMI =================
+
         ctx.fillStyle = 'rgba(148, 163, 184, 0.45)';
+
         ctx.font = '10px monospace';
+
         ctx.fillText('PMS (Sup.) ───', 12, 148);
+
         ctx.fillText('PMI (Inf.) ───', 12, 256);
+
       }
+
+
 
       function animationLoop(now) {
+
         if (isPlaying) {
+
           const dt = Math.min((now - lastTime) / 1000, 0.05);
+
           const degPerSec = (rpm / 60) * 360;
+
           crankDeg = (crankDeg + degPerSec * dt) % 720;
+
           updateUI(crankDeg);
+
         }
+
         lastTime = now;
+
         drawEngine(crankDeg);
+
         requestAnimationFrame(animationLoop);
+
       }
+
+
 
       // Event Listeners
+
       playPauseBtn.addEventListener('click', () => {
+
         isPlaying = !isPlaying;
+
         playText.textContent = isPlaying ? 'Pausar' : 'Reanudar';
+
         playPauseBtn.className = isPlaying
+
           ? 'w-28 py-2 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-slate-950 font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-orange-500/20 transition-all'
+
           : 'w-28 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-slate-950 font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 transition-all';
+
       });
+
+
 
       stepBtn.addEventListener('click', () => {
+
         isPlaying = false;
+
         playText.textContent = 'Reanudar';
+
         crankDeg = (crankDeg + 15) % 720;
+
         updateUI(crankDeg);
+
         drawEngine(crankDeg);
+
       });
+
+
 
       scrubber.addEventListener('input', (e) => {
+
         isPlaying = false;
+
         playText.textContent = 'Reanudar';
+
         crankDeg = parseFloat(e.target.value);
+
         updateUI(crankDeg);
+
         drawEngine(crankDeg);
+
       });
+
+
 
       speedSlider.addEventListener('input', (e) => {
+
         rpm = parseInt(e.target.value);
+
         rpmLabel.textContent = `${rpm} RPM`;
+
       });
+
+
 
       slowMoBtn.addEventListener('click', () => {
+
         rpm = 20;
+
         speedSlider.value = 20;
+
         rpmLabel.textContent = '20 RPM';
+
         if (!isPlaying) {
+
           isPlaying = true;
+
           playText.textContent = 'Pausar';
+
         }
+
       });
+
+
 
       resetBtn.addEventListener('click', () => {
+
         crankDeg = 0;
+
         updateUI(crankDeg);
+
         drawEngine(crankDeg);
+
       });
+
+
 
       document.querySelectorAll('.stage-jump-btn').forEach(btn => {
+
         btn.addEventListener('click', () => {
+
           isPlaying = false;
+
           playText.textContent = 'Reanudar';
+
           crankDeg = parseFloat(btn.dataset.deg);
+
           updateUI(crankDeg);
+
           drawEngine(crankDeg);
+
         });
+
       });
+
+
 
       // Interactive hover inspection
+
       const enginePartTooltip = document.getElementById('enginePartTooltip');
+
       const enginePartName = document.getElementById('enginePartName');
+
       const enginePartDesc = document.getElementById('enginePartDesc');
 
+
+
       canvas.addEventListener('mousemove', (e) => {
+
         const rect = canvas.getBoundingClientRect();
+
         const scaleX = canvas.width / rect.width;
+
         const scaleY = canvas.height / rect.height;
+
         const mx = (e.clientX - rect.left) * scaleX;
+
         const my = (e.clientY - rect.top) * scaleY;
 
+
+
         const rad = (crankDeg * Math.PI) / 180;
+
         const crankPinX = cx + crankR * Math.sin(rad);
+
         const crankPinY = cy - crankR * Math.cos(rad);
+
         const dx = crankPinX - cx;
+
         const wristPinY = crankPinY - Math.sqrt(Math.max(0, conrodL * conrodL - dx * dx));
+
         const pistonTopY = wristPinY - 28;
 
+
+
         let part = null;
+
         if (Math.abs(mx - cx) < 16 && my >= cylinderTopY - 45 && my <= cylinderTopY + 15) {
+
           part = {
+
             name: "⚡ Bujía de Alto Voltaje",
+
             desc: "Dispara la chispa eléctrica de 25,000 V exactamente al finalizar la compresión para detonar la mezcla."
+
           };
+
         } else if (Math.abs(mx - (cx - 46)) < 24 && my >= cylinderTopY - 60 && my <= cylinderTopY + 25) {
+
           part = {
+
             name: "📥 Válvula de Admisión",
+
             desc: "Regula el ingreso de aire y combustible al cilindro. Accionada por el árbol de levas superior."
+
           };
+
         } else if (Math.abs(mx - (cx + 46)) < 24 && my >= cylinderTopY - 60 && my <= cylinderTopY + 25) {
+
           part = {
+
             name: "📤 Válvula de Escape",
+
             desc: "Permite la evacuación de los gases residuales quemados hacia el colector durante el 4º tiempo."
+
           };
+
         } else if (Math.abs(mx - cx) < pistonW / 2 && my >= pistonTopY && my <= pistonTopY + pistonH) {
+
           part = {
+
             name: "🔩 Pistón Forjado (3 Aros)",
+
             desc: "Émbolo de aleación de aluminio con aros de compresión y rascador de aceite. Recibe la presión de los gases."
+
           };
+
         } else if (my > pistonTopY + pistonH && my < cy - 20 && Math.abs(mx - (cx + dx * ((my - wristPinY) / (crankPinY - wristPinY)))) < 24) {
+
           part = {
+
             name: "⛓️ Biela en Perfil 'H'",
+
             desc: "Viga estructural de acero forjado con cojinetes que transforma el vaivén del pistón en rotación."
+
           };
+
         } else if (Math.hypot(mx - cx, my - cy) < crankR + 28) {
+
           part = {
+
             name: "🔄 Cigüeñal y Contrapesos",
+
             desc: "Eje rotatorio principal. Los contrapesos equilibran la inercia del tren alternativo para evitar vibraciones."
+
           };
+
         } else if ((Math.abs(mx - (cx - pistonW/2 - 7)) < 15 || Math.abs(mx - (cx + pistonW/2 + 7)) < 15) && my >= cylinderTopY && my <= cy - 50) {
+
           part = {
+
             name: "🛡️ Cilindro y Aletas Térmicas",
+
             desc: "Camisa de acero de tolerancia micrométrica; las aletas exteriores disipan el calor térmico residual."
+
           };
+
         }
+
+
 
         if (part) {
+
           enginePartTooltip.classList.remove('hidden');
+
           enginePartName.textContent = part.name;
+
           enginePartDesc.textContent = part.desc;
+
         } else {
+
           enginePartTooltip.classList.add('hidden');
+
         }
+
       });
+
+
 
       canvas.addEventListener('mouseleave', () => {
+
         enginePartTooltip.classList.add('hidden');
+
       });
+
+
 
       // Start loop
+
       requestAnimationFrame(animationLoop);
+
     })();
+
+
 
     /* ========================================================================= */
-    (function initLaminarFlow() {
-      const canvas = document.getElementById('laminarCanvas');
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-      let reynolds = 1200;
-      let fluidViscosity = 1.0;
-      let simTime = 0;
-      const regimeBadge = document.getElementById('reynoldsRegimeBadge');
-      const reynoldsSlider = document.getElementById('reynoldsSlider');
-      const reynoldsSliderLabel = document.getElementById('reynoldsSliderLabel');
-      const hudReynolds = document.getElementById('hudReynoldsNumber');
-      const hudViscosity = document.getElementById('hudFluidViscosity');
-      const hudDrag = document.getElementById('hudDragCoeff');
-      const injectDyeBtn = document.getElementById('injectDyeBtn');
-      const dyeStreams = [
-        { y: 92, color: '#f43f5e' }, { y: 130, color: '#38bdf8' },
-        { y: 170, color: '#2dd4bf' }, { y: 210, color: '#eab308' },
-        { y: 250, color: '#a855f7' }, { y: 290, color: '#38bdf8' },
-        { y: 328, color: '#f43f5e' }
-      ];
-      const particles = Array.from({ length: 180 }, () => ({
-        x: Math.random() * canvas.width,
-        y: 30 + Math.random() * (canvas.height - 60),
-        color: Math.random() > 0.5 ? '#2dd4bf' : '#38bdf8',
-        size: Math.random() * 2 + 1.2
-      }));
 
-      const wing = { x: 285, y: 210, chord: 170, thickness: 34 };
-      function airfoilPoint(t, upper) {
-        const x = t * wing.chord;
-        const thickness = 5 * wing.thickness * (
-          0.2969 * Math.sqrt(Math.max(t, 0)) - 0.1260 * t -
-          0.3516 * t * t + 0.2843 * t * t * t - 0.1015 * t * t * t * t
-        );
-        const camber = 0.035 * wing.chord * Math.sin(Math.PI * t);
-        return { x: wing.x + x, y: wing.y - camber + (upper ? -thickness : thickness) };
-      }
-      function airfoilPath() {
-        ctx.beginPath();
-        for (let i = 0; i <= 30; i++) {
-          const p = airfoilPoint(1 - i / 30, true);
-          if (i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y);
-        }
-        for (let i = 0; i <= 30; i++) ctx.lineTo(airfoilPoint(i / 30, false).x, airfoilPoint(i / 30, false).y);
-        ctx.closePath();
-      }
-      function insideWing(x, y) {
-        if (x < wing.x - 2 || x > wing.x + wing.chord + 2) return false;
-        const t = Math.max(0, Math.min(1, (x - wing.x) / wing.chord));
-        const upper = airfoilPoint(t, true).y;
-        const lower = airfoilPoint(t, false).y;
-        return y >= upper && y <= lower;
-      }
-      function flowY(x, y, time) {
-        const center = wing.y - 3;
-        const influence = Math.exp(-Math.pow((x - (wing.x + wing.chord * 0.5)) / 125, 2));
-        const offset = (y - center) / 120;
-        let result = y + offset * influence * 58;
-        if (x > wing.x + wing.chord) {
-          const wake = Math.min(1, (x - wing.x - wing.chord) / 180);
-          const wakeStrength = Math.max(0, (reynolds - 1800) / 5700);
-          result += Math.sin((x - wing.x) * 0.055 - time * 5) * 30 * wake * wakeStrength;
-        }
-        return result;
-      }
-      function updateRegimeBadge(re) {
-        hudReynolds.textContent = `Re = ${Math.round(re)}`;
-        reynoldsSliderLabel.textContent = `Re = ${Math.round(re)}`;
-        if (re < 2000) {
-          regimeBadge.textContent = 'Laminar puro';
-          regimeBadge.className = 'w-32 text-center py-1 rounded-md bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/30 inline-block tabular-nums';
-        } else if (re < 4000) {
-          regimeBadge.textContent = 'Transición';
-          regimeBadge.className = 'w-32 text-center py-1 rounded-md bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30 inline-block tabular-nums';
-        } else {
-          regimeBadge.textContent = 'Turbulento';
-          regimeBadge.className = 'w-32 text-center py-1 rounded-md bg-rose-500/20 text-rose-300 font-bold border border-rose-500/30 inline-block tabular-nums';
-        }
-        hudDrag.textContent = (0.24 + Math.min(0.7, reynolds / 12000)).toFixed(2);
-      }
-      reynoldsSlider.addEventListener('input', event => {
-        reynolds = Number(event.target.value);
-        updateRegimeBadge(reynolds);
-      });
-      document.querySelectorAll('.fluid-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          document.querySelectorAll('.fluid-btn').forEach(item => {
-            item.className = 'fluid-btn px-2.5 py-1 rounded-lg text-xs bg-slate-900 border border-slate-800 text-slate-300 hover:text-white transition';
-          });
-          btn.className = 'fluid-btn px-2.5 py-1 rounded-lg text-xs bg-teal-500/20 border border-teal-500/40 text-teal-300 font-bold transition';
-          fluidViscosity = Number(btn.dataset.visc);
-          hudViscosity.textContent = `${fluidViscosity} mPa·s`;
-          reynolds = fluidViscosity > 100 ? 250 : fluidViscosity > 50 ? 800 : fluidViscosity < 0.1 ? 4800 : 1200;
-          reynoldsSlider.value = reynolds;
-          updateRegimeBadge(reynolds);
-        });
-      });
-      injectDyeBtn.addEventListener('click', () => {
-        for (let i = 0; i < 35; i++) {
-          particles.push({ x: 8, y: 70 + Math.random() * 280, color: ['#f43f5e', '#a855f7', '#eab308', '#2dd4bf'][i % 4], size: 3.2 });
-        }
-      });
-      function drawLaminarSimulation() {
-        simTime += 0.02;
-        ctx.fillStyle = '#020617';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = '#1e293b';
-        ctx.fillRect(0, 0, canvas.width, 24);
-        ctx.fillRect(0, canvas.height - 24, canvas.width, 24);
-        ctx.strokeStyle = '#334155';
-        ctx.lineWidth = 2;
-        ctx.strokeRect(0, 0, canvas.width, 24);
-        ctx.strokeRect(0, canvas.height - 24, canvas.width, 24);
-        dyeStreams.forEach(stream => {
-          ctx.strokeStyle = stream.color;
-          ctx.globalAlpha = 0.72;
-          ctx.lineWidth = 2;
-          ctx.beginPath();
-          for (let x = 0; x <= canvas.width; x += 8) {
-            const y = flowY(x, stream.y, simTime);
-            if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
-          }
-          ctx.stroke();
-        });
-        ctx.globalAlpha = 1;
-        const speed = 1.5 + reynolds / 2600;
-        particles.forEach(p => {
-          const targetY = flowY(p.x, p.y, simTime);
-          p.y += (targetY - p.y) * 0.045;
-          p.x += speed;
-          if (insideWing(p.x, p.y) || p.x > canvas.width + 8) {
-            p.x = -4;
-            p.y = 35 + Math.random() * (canvas.height - 70);
-          }
-          ctx.fillStyle = p.color;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-          ctx.fill();
-        });
-        const wingGradient = ctx.createLinearGradient(wing.x, wing.y - 40, wing.x, wing.y + 40);
-        wingGradient.addColorStop(0, '#cbd5e1');
-        wingGradient.addColorStop(0.45, '#64748b');
-        wingGradient.addColorStop(1, '#1e293b');
-        airfoilPath();
-        ctx.fillStyle = wingGradient;
-        ctx.fill();
-        ctx.strokeStyle = '#e2e8f0';
-        ctx.lineWidth = 2.5;
-        ctx.stroke();
-        ctx.fillStyle = '#f8fafc';
-        ctx.font = 'bold 11px monospace';
-        ctx.textAlign = 'center';
-        ctx.fillText('Perfil de ala / airfoil', wing.x + wing.chord / 2, wing.y + 4);
-        ctx.fillStyle = reynolds > 3500 ? '#f43f5e' : '#2dd4bf';
-        ctx.fillText(reynolds > 3500 ? 'Estela oscilante y separación' : 'Capas guiadas alrededor del ala', 520, 92);
-        requestAnimationFrame(drawLaminarSimulation);
-      }
-      updateRegimeBadge(reynolds);
-      requestAnimationFrame(drawLaminarSimulation);
-    })();
   </script>
 </body>
 </html>

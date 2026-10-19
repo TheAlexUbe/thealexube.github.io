@@ -1,23 +1,21 @@
-# AeroLab
+# Motor 4T
 
-AeroLab es una experiencia web estática para explorar física, mecánica y dinámica de fluidos mediante simulaciones visuales en tiempo real con HTML5 Canvas y Tailwind CSS.
+Experiencia web est?tica dedicada a visualizar el funcionamiento de un motor de cuatro tiempos mediante una simulaci?n interactiva del ciclo Otto.
 
-## Simulaciones incluidas
+## Incluye
 
-### 1. Motor de cuatro tiempos
-
-Animación del ciclo Otto de 720 grados con cinemática de biela-manivela, válvulas sincronizadas, partículas de combustible, combustión, controles de RPM y avance paso a paso.
-
-### 2. Flujo laminar y turbulento
-
-Visualización Canvas del número de Reynolds y del flujo alrededor de un perfil de ala (airfoil), con líneas de corriente, partículas, estela cualitativa, inyección de tinte y presets de agua, aceite, glicerina y aire. La escena ilustra separación y arrastre sin calcular una sustentación cuantitativa exacta.
+- Animaci?n Canvas de la cinem?tica biela-manivela.
+- Admisi?n, compresi?n, explosi?n y escape en un ciclo de 720?.
+- V?lvulas sincronizadas y part?culas de mezcla/combusti?n.
+- Control de reproducci?n, c?mara lenta, avance por pasos, velocidad y salto entre etapas.
+- Panel explicativo de estados, presi?n y componentes principales del motor.
 
 ## Desarrollo
 
-No requiere compilación. `index.html` carga Tailwind y las fuentes desde CDN, y ejecuta JavaScript nativo en el navegador. Para probarlo localmente:
+No requiere compilaci?n. `index.html` carga Tailwind CSS y la fuente Inter desde CDN, y ejecuta JavaScript nativo en el navegador. Para probarlo localmente:
 
 ```powershell
 python -m http.server 4173
 ```
 
-Los modelos son educativos y sirven como apoyo visual para comprender principios de mecánica y dinámica de fluidos.
+La simulaci?n es educativa y sirve como apoyo visual para comprender el ciclo Otto y la mec?nica b?sica de un motor 4T.
