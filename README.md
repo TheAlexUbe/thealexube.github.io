@@ -10,7 +10,7 @@ Animación del ciclo Otto de 720 grados con cinemática de biela-manivela, válv
 
 ### 2. Flujo laminar y turbulento
 
-Visualización Canvas del número de Reynolds, túnel con obstáculo, chorro laminar, inyección de tinte y presets de agua, aceite, glicerina y aire.
+Visualización Canvas del número de Reynolds y del flujo alrededor de un perfil de ala (airfoil), con líneas de corriente, partículas, estela cualitativa, inyección de tinte y presets de agua, aceite, glicerina y aire. La escena ilustra separación y arrastre sin calcular una sustentación cuantitativa exacta.
 
 ## Desarrollo
 

@@ -30,7 +30,7 @@
           },
           fontFamily: {
             sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace']
+            mono: ['monospace']
           }
         }
       }
@@ -39,13 +39,13 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Inter', sans-serif;
     }
     .font-mono {
-      font-family: 'JetBrains Mono', monospace;
+      font-family: monospace;
     }
     .tabular-nums {
       font-variant-numeric: tabular-nums;
@@ -171,7 +171,7 @@
         <a href="#flujo-laminar" class="glass-card glass-card-hover p-4 rounded-xl group border-l-4 border-l-teal-500 col-span-2 sm:col-span-1">
           <div class="text-xl mb-1">💧</div>
           <h3 class="font-bold text-white text-xs sm:text-sm group-hover:text-teal-400 transition-colors">2. Flujo Laminar</h3>
-          <p class="text-[11px] text-slate-400 mt-0.5 leading-snug">Reynolds, agua de cristal y turbulencia.</p>
+          <p class="text-[11px] text-slate-400 mt-0.5 leading-snug">Reynolds, perfiles aerodinámicos y estelas.</p>
         </a>
       </div>
     </div>
@@ -375,7 +375,7 @@
             2. Flujo Laminar vs. Flujo Turbulento
           </h2>
           <p class="text-slate-400 mt-1 max-w-2xl text-xs sm:text-sm">
-            Descubre por qué a baja velocidad o alta viscosidad los fluidos se desplazan en láminas paralelas sin mezclarse jamás (el efecto 'agua de cristal'), y cómo el <strong>Número de Reynolds</strong> desata el caos turbulento.
+            Observa cómo las capas de fluido se desvían alrededor de un ala, cómo aparece una estela y cómo el <strong>Número de Reynolds</strong> cambia el régimen del flujo.
           </p>
         </div>
         <div>
@@ -394,12 +394,9 @@
             <!-- Mode Switcher -->
             <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
               <div class="flex items-center gap-1.5 bg-slate-900/90 p-1 rounded-xl border border-slate-800">
-                <button id="laminarModeTunnelBtn" class="px-3 py-1.5 rounded-lg text-xs font-bold transition bg-teal-500 text-slate-950 shadow">
-                  🔬 Túnel de Flujo con Obstáculo
-                </button>
-                <button id="laminarModeJetBtn" class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-slate-400 hover:text-white">
-                  🚰 Chorro de "Agua Congelada"
-                </button>
+                <span class="px-3 py-1.5 rounded-lg text-xs font-bold bg-teal-500 text-slate-950 shadow">
+                  ✈️ Túnel de Flujo alrededor de un Ala
+                </span>
               </div>
 
               <div class="flex items-center gap-2 text-xs font-mono">
@@ -430,12 +427,6 @@
                 </div>
               </div>
 
-              <!-- Interactive Disturbance Button (for water jet mode) -->
-              <div id="touchJetBtnContainer" class="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 hidden">
-                <button id="touchJetBtn" class="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-teal-400 to-cyan-400 hover:from-teal-300 hover:to-cyan-300 text-slate-950 font-black text-xs uppercase tracking-wider shadow-xl shadow-teal-500/30 active:scale-95 transition-all flex items-center gap-2">
-                  👆 Tocar el chorro con el dedo (Perturbación)
-                </button>
-              </div>
             </div>
 
             <!-- Controls: Reynolds slider, fluids & dye injector -->
@@ -504,12 +495,12 @@
               </div>
 
               <div class="p-2.5 rounded-xl bg-slate-900/60 border border-slate-800">
-                <div class="font-bold text-amber-300 text-sm mb-0.5">3. El Chorro de "Agua de Cristal"</div>
-                Al perforar un globo o usar boquillas con bajo Reynolds, la superficie del agua es tan matemáticamente lisa e inmóvil que <strong>parece una vara de vidrio sólido congelado</strong>, hasta que un dedo perturba la capa límite.
+                <div class="font-bold text-amber-300 text-sm mb-0.5">3. Flujo sobre un ala y estela</div>
+                El borde de ataque redondeado separa las capas de fluido y las guía sobre el perfil. Si el gradiente de presión se vuelve adverso, la capa límite puede separarse y dejar una <strong>estela</strong> más ancha y oscilante detrás del borde de salida. Esta vista es cualitativa: no calcula sustentación exacta.
               </div>
 
               <div class="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-200/90 leading-relaxed">
-                <strong>🌀 Reversibilidad Temporal (Stokes):</strong> A muy bajo Reynolds ($Re \ll 1$, como en la glicerina), si mezclas gotas de colorante girando un cilindro y luego giras en sentido contrario exactamente las mismas vueltas, ¡las gotas se desmezclan y vuelven a su forma original!
+                <strong>🌀 Reversibilidad Temporal (Stokes):</strong> A muy bajo Reynolds ($Re \ll 1$, como en la glicerina), las fuerzas viscosas dominan y las trayectorias se vuelven suaves, predecibles y poco propensas a formar una estela turbulenta.
               </div>
             </div>
           </div>
@@ -1115,9 +1106,9 @@
         pGrad.addColorStop(1, '#475569');
         ctx.fillStyle = pGrad;
 
-        // Piston body with rounded skirt
+        // Piston body
         ctx.beginPath();
-        ctx.roundRect(pLeft, pistonTopY, pW, pistonH, [6, 6, 4, 4]);
+        ctx.rect(pLeft, pistonTopY, pW, pistonH);
         ctx.fill();
         ctx.strokeStyle = '#94a3b8';
         ctx.lineWidth = 1.5;
@@ -1166,7 +1157,7 @@
 
         // ================= 10. LABELS: PMS & PMI =================
         ctx.fillStyle = 'rgba(148, 163, 184, 0.45)';
-        ctx.font = '10px JetBrains Mono';
+        ctx.font = '10px monospace';
         ctx.fillText('PMS (Sup.) ───', 12, 148);
         ctx.fillText('PMI (Inf.) ───', 12, 256);
       }
@@ -1318,17 +1309,9 @@
       const canvas = document.getElementById('laminarCanvas');
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
-
-      // State
-      let mode = 'tunnel'; // 'tunnel' or 'jet'
-      let reynolds = 1200; // Reynolds number
-      let fluidViscosity = 1.0; // mPa.s
-      let fluidName = "Agua Dulce";
-      let disturbanceTime = 0; // for jet disturbance touch
-
-      // UI
-      const tunnelBtn = document.getElementById('laminarModeTunnelBtn');
-      const jetBtn = document.getElementById('laminarModeJetBtn');
+      let reynolds = 1200;
+      let fluidViscosity = 1.0;
+      let simTime = 0;
       const regimeBadge = document.getElementById('reynoldsRegimeBadge');
       const reynoldsSlider = document.getElementById('reynoldsSlider');
       const reynoldsSliderLabel = document.getElementById('reynoldsSliderLabel');
@@ -1336,374 +1319,149 @@
       const hudViscosity = document.getElementById('hudFluidViscosity');
       const hudDrag = document.getElementById('hudDragCoeff');
       const injectDyeBtn = document.getElementById('injectDyeBtn');
-      const touchJetBtnContainer = document.getElementById('touchJetBtnContainer');
-      const touchJetBtn = document.getElementById('touchJetBtn');
-
-      // Flow particles
-      const particles = [];
-      const numParticles = 180;
-      for (let i = 0; i < numParticles; i++) {
-        particles.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          vx: 0,
-          vy: 0,
-          color: Math.random() > 0.5 ? '#2dd4bf' : '#38bdf8',
-          size: Math.random() * 2 + 1.5,
-          streamIndex: Math.floor(Math.random() * 8)
-        });
-      }
-
-      // Streamline dye tracers (colored bands)
       const dyeStreams = [
-        { y: 130, color: '#f43f5e' },
-        { y: 175, color: '#38bdf8' },
-        { y: 210, color: '#2dd4bf' },
-        { y: 245, color: '#eab308' },
-        { y: 290, color: '#a855f7' }
+        { y: 92, color: '#f43f5e' }, { y: 130, color: '#38bdf8' },
+        { y: 170, color: '#2dd4bf' }, { y: 210, color: '#eab308' },
+        { y: 250, color: '#a855f7' }, { y: 290, color: '#38bdf8' },
+        { y: 328, color: '#f43f5e' }
       ];
+      const particles = Array.from({ length: 180 }, () => ({
+        x: Math.random() * canvas.width,
+        y: 30 + Math.random() * (canvas.height - 60),
+        color: Math.random() > 0.5 ? '#2dd4bf' : '#38bdf8',
+        size: Math.random() * 2 + 1.2
+      }));
 
+      const wing = { x: 285, y: 210, chord: 170, thickness: 34 };
+      function airfoilPoint(t, upper) {
+        const x = t * wing.chord;
+        const thickness = 5 * wing.thickness * (
+          0.2969 * Math.sqrt(Math.max(t, 0)) - 0.1260 * t -
+          0.3516 * t * t + 0.2843 * t * t * t - 0.1015 * t * t * t * t
+        );
+        const camber = 0.035 * wing.chord * Math.sin(Math.PI * t);
+        return { x: wing.x + x, y: wing.y - camber + (upper ? -thickness : thickness) };
+      }
+      function airfoilPath() {
+        ctx.beginPath();
+        for (let i = 0; i <= 30; i++) {
+          const p = airfoilPoint(1 - i / 30, true);
+          if (i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y);
+        }
+        for (let i = 0; i <= 30; i++) ctx.lineTo(airfoilPoint(i / 30, false).x, airfoilPoint(i / 30, false).y);
+        ctx.closePath();
+      }
+      function insideWing(x, y) {
+        if (x < wing.x - 2 || x > wing.x + wing.chord + 2) return false;
+        const t = Math.max(0, Math.min(1, (x - wing.x) / wing.chord));
+        const upper = airfoilPoint(t, true).y;
+        const lower = airfoilPoint(t, false).y;
+        return y >= upper && y <= lower;
+      }
+      function flowY(x, y, time) {
+        const center = wing.y - 3;
+        const influence = Math.exp(-Math.pow((x - (wing.x + wing.chord * 0.5)) / 125, 2));
+        const offset = (y - center) / 120;
+        let result = y + offset * influence * 58;
+        if (x > wing.x + wing.chord) {
+          const wake = Math.min(1, (x - wing.x - wing.chord) / 180);
+          const wakeStrength = Math.max(0, (reynolds - 1800) / 5700);
+          result += Math.sin((x - wing.x) * 0.055 - time * 5) * 30 * wake * wakeStrength;
+        }
+        return result;
+      }
       function updateRegimeBadge(re) {
         hudReynolds.textContent = `Re = ${Math.round(re)}`;
         reynoldsSliderLabel.textContent = `Re = ${Math.round(re)}`;
-
-        // Approximate drag coefficient
-        let cd = 0.42;
         if (re < 2000) {
-          cd = (24 / Math.max(1, re * 0.05)).toFixed(2);
-          regimeBadge.textContent = "Laminar puro";
-          regimeBadge.className = "w-32 text-center py-1 rounded-md bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/30 inline-block tabular-nums";
+          regimeBadge.textContent = 'Laminar puro';
+          regimeBadge.className = 'w-32 text-center py-1 rounded-md bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/30 inline-block tabular-nums';
         } else if (re < 4000) {
-          cd = "0.45";
-          regimeBadge.textContent = "Transición";
-          regimeBadge.className = "w-32 text-center py-1 rounded-md bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30 inline-block tabular-nums";
+          regimeBadge.textContent = 'Transición';
+          regimeBadge.className = 'w-32 text-center py-1 rounded-md bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30 inline-block tabular-nums';
         } else {
-          cd = (0.5 + (re / 10000) * 0.6).toFixed(2);
-          regimeBadge.textContent = "Turbulento";
-          regimeBadge.className = "w-32 text-center py-1 rounded-md bg-rose-500/20 text-rose-300 font-bold border border-rose-500/30 inline-block tabular-nums";
+          regimeBadge.textContent = 'Turbulento';
+          regimeBadge.className = 'w-32 text-center py-1 rounded-md bg-rose-500/20 text-rose-300 font-bold border border-rose-500/30 inline-block tabular-nums';
         }
-        hudDrag.textContent = cd;
+        hudDrag.textContent = (0.24 + Math.min(0.7, reynolds / 12000)).toFixed(2);
       }
-
-      tunnelBtn.addEventListener('click', () => {
-        mode = 'tunnel';
-        tunnelBtn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-teal-500 text-slate-950 shadow";
-        jetBtn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition text-slate-400 hover:text-white";
-        touchJetBtnContainer.classList.add('hidden');
-      });
-
-      jetBtn.addEventListener('click', () => {
-        mode = 'jet';
-        jetBtn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-teal-500 text-slate-950 shadow";
-        tunnelBtn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition text-slate-400 hover:text-white";
-        touchJetBtnContainer.classList.remove('hidden');
-      });
-
-      reynoldsSlider.addEventListener('input', (e) => {
-        reynolds = parseFloat(e.target.value);
+      reynoldsSlider.addEventListener('input', event => {
+        reynolds = Number(event.target.value);
         updateRegimeBadge(reynolds);
       });
-
       document.querySelectorAll('.fluid-btn').forEach(btn => {
         btn.addEventListener('click', () => {
-          document.querySelectorAll('.fluid-btn').forEach(b => {
-            b.className = "fluid-btn px-2.5 py-1 rounded-lg text-xs bg-slate-900 border border-slate-800 text-slate-300 hover:text-white transition";
+          document.querySelectorAll('.fluid-btn').forEach(item => {
+            item.className = 'fluid-btn px-2.5 py-1 rounded-lg text-xs bg-slate-900 border border-slate-800 text-slate-300 hover:text-white transition';
           });
-          btn.className = "fluid-btn px-2.5 py-1 rounded-lg text-xs bg-teal-500/20 border border-teal-500/40 text-teal-300 font-bold transition";
-          fluidViscosity = parseFloat(btn.dataset.visc);
-          fluidName = btn.dataset.name;
+          btn.className = 'fluid-btn px-2.5 py-1 rounded-lg text-xs bg-teal-500/20 border border-teal-500/40 text-teal-300 font-bold transition';
+          fluidViscosity = Number(btn.dataset.visc);
           hudViscosity.textContent = `${fluidViscosity} mPa·s`;
-
-          // Adjust Reynolds according to viscosity Re ~ 1 / mu
-          if (fluidViscosity > 100) reynolds = 250; // Glycerin is strongly laminar
-          else if (fluidViscosity > 50) reynolds = 800;
-          else if (fluidViscosity < 0.1) reynolds = 4800; // Air is turbulent easily
-          else reynolds = 1200;
-
+          reynolds = fluidViscosity > 100 ? 250 : fluidViscosity > 50 ? 800 : fluidViscosity < 0.1 ? 4800 : 1200;
           reynoldsSlider.value = reynolds;
           updateRegimeBadge(reynolds);
         });
       });
-
       injectDyeBtn.addEventListener('click', () => {
         for (let i = 0; i < 35; i++) {
-          particles.push({
-            x: 10,
-            y: 100 + Math.random() * 220,
-            vx: 0,
-            vy: 0,
-            color: ['#f43f5e', '#a855f7', '#eab308', '#2dd4bf'][Math.floor(Math.random() * 4)],
-            size: 3.5,
-            streamIndex: Math.floor(Math.random() * 5)
-          });
+          particles.push({ x: 8, y: 70 + Math.random() * 280, color: ['#f43f5e', '#a855f7', '#eab308', '#2dd4bf'][i % 4], size: 3.2 });
         }
       });
-
-      touchJetBtn.addEventListener('click', () => {
-        disturbanceTime = 1.8; // Trigger 1.8s of violent disturbance
-      });
-
-      let simTime = 0;
-
       function drawLaminarSimulation() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
         simTime += 0.02;
-
-        if (disturbanceTime > 0) disturbanceTime -= 0.02;
-
-        if (mode === 'tunnel') {
-          // ================= MODE 1: HYDRODYNAMIC TUNNEL WITH CYLINDER =================
-          // Background channel
-          ctx.fillStyle = '#020617';
-          ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-          // Walls (top and bottom)
-          ctx.fillStyle = '#1e293b';
-          ctx.fillRect(0, 0, canvas.width, 24);
-          ctx.fillRect(0, canvas.height - 24, canvas.width, 24);
-          ctx.strokeStyle = '#334155';
+        ctx.fillStyle = '#020617';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#1e293b';
+        ctx.fillRect(0, 0, canvas.width, 24);
+        ctx.fillRect(0, canvas.height - 24, canvas.width, 24);
+        ctx.strokeStyle = '#334155';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(0, 0, canvas.width, 24);
+        ctx.strokeRect(0, canvas.height - 24, canvas.width, 24);
+        dyeStreams.forEach(stream => {
+          ctx.strokeStyle = stream.color;
+          ctx.globalAlpha = 0.72;
           ctx.lineWidth = 2;
-          ctx.strokeRect(0, 0, canvas.width, 24);
-          ctx.strokeRect(0, canvas.height - 24, canvas.width, 24);
-
-          // Obstacle: Cylinder in the flow at (280, 210)
-          const obsX = 280;
-          const obsY = 210;
-          const obsR = 34;
-
-          const isTurbulent = reynolds > 3500;
-          const turbulenceFactor = Math.max(0, (reynolds - 2200) / 4000);
-
-          // Draw Streamlines across the channel
-          dyeStreams.forEach(stream => {
-            ctx.strokeStyle = stream.color;
-            ctx.lineWidth = 2;
-            ctx.globalAlpha = 0.75;
-            ctx.beginPath();
-
-            for (let x = 0; x <= canvas.width; x += 10) {
-              let y = stream.y;
-              const distToObs = Math.hypot(x - obsX, y - obsY);
-
-              // Fluid deflection around obstacle (Potential / Stokes flow)
-              if (distToObs < obsR + 80) {
-                const dy = y - obsY;
-                const sign = dy >= 0 ? 1 : -1;
-                const push = (1 - (distToObs / (obsR + 80))) * 38 * sign;
-                y += push;
-              }
-
-              // In wake of cylinder (x > obsX)
-              if (x > obsX + obsR) {
-                const wakeX = x - (obsX + obsR);
-                if (turbulenceFactor > 0.05) {
-                  // Von Kármán vortex street: alternating sinusoidal eddies
-                  const vortexFreq = 0.04;
-                  const vortexAmp = Math.min(45, wakeX * 0.18 * turbulenceFactor);
-                  const eddy = Math.sin(wakeX * vortexFreq - simTime * 6) * vortexAmp;
-                  // Alternate swirl based on stream position
-                  y += eddy * (stream.y > obsY ? 1 : -1);
-                }
-              }
-
-              if (x === 0) ctx.moveTo(x, y);
-              else ctx.lineTo(x, y);
-            }
-            ctx.stroke();
-          });
-          ctx.globalAlpha = 1.0;
-
-          // Draw and advance fluid particles
-          const baseSpeed = 2.5 + (reynolds / 2000) * 2;
-          particles.forEach(p => {
-            const dist = Math.hypot(p.x - obsX, p.y - obsY);
-
-            let vx = baseSpeed;
-            let vy = 0;
-
-            if (dist < obsR + 60) {
-              const sign = p.y >= obsY ? 1 : -1;
-              vy = ((obsR + 60 - dist) / 60) * 3 * sign;
-            }
-
-            // Turbulent vortex generation in wake
-            if (p.x > obsX + obsR && turbulenceFactor > 0.05) {
-              const wakeX = p.x - (obsX + obsR);
-              const eddy = Math.sin(wakeX * 0.05 - simTime * 7) * 2.5 * turbulenceFactor;
-              vy += eddy;
-              vx += (Math.random() - 0.5) * 1.5 * turbulenceFactor;
-            }
-
-            p.x += vx;
-            p.y += vy;
-
-            // Reset loop
-            if (p.x > canvas.width) {
-              p.x = 0;
-              p.y = 30 + Math.random() * (canvas.height - 60);
-            }
-
-            // Draw particle
-            ctx.fillStyle = p.color;
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-            ctx.fill();
-          });
-
-          // Draw the physical Obstacle Cylinder
-          const cylGrad = ctx.createRadialGradient(obsX - 10, obsY - 10, 5, obsX, obsY, obsR);
-          cylGrad.addColorStop(0, '#94a3b8');
-          cylGrad.addColorStop(0.7, '#475569');
-          cylGrad.addColorStop(1, '#0f172a');
-          ctx.fillStyle = cylGrad;
           ctx.beginPath();
-          ctx.arc(obsX, obsY, obsR, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.strokeStyle = '#cbd5e1';
-          ctx.lineWidth = 2.5;
+          for (let x = 0; x <= canvas.width; x += 8) {
+            const y = flowY(x, stream.y, simTime);
+            if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+          }
           ctx.stroke();
-
-          // Obstacle label
-          ctx.fillStyle = '#f8fafc';
-          ctx.font = 'bold 10px JetBrains Mono';
-          ctx.textAlign = 'center';
-          ctx.fillText('Cilindro', obsX, obsY + 3);
-
-          if (isTurbulent) {
-            ctx.fillStyle = '#f43f5e';
-            ctx.font = 'bold 11px JetBrains Mono';
-            ctx.fillText('Vórtices de Von Kármán', obsX + 160, obsY - obsR - 15);
-          } else {
-            ctx.fillStyle = '#2dd4bf';
-            ctx.font = 'bold 11px JetBrains Mono';
-            ctx.fillText('Flujo Laminar (Capas Paralelas)', obsX + 160, obsY - obsR - 15);
+        });
+        ctx.globalAlpha = 1;
+        const speed = 1.5 + reynolds / 2600;
+        particles.forEach(p => {
+          const targetY = flowY(p.x, p.y, simTime);
+          p.y += (targetY - p.y) * 0.045;
+          p.x += speed;
+          if (insideWing(p.x, p.y) || p.x > canvas.width + 8) {
+            p.x = -4;
+            p.y = 35 + Math.random() * (canvas.height - 70);
           }
-
-        } else {
-          // ================= MODE 2: LAMINAR JET ("AGUA CONGELADA / VIDRIO") =================
-          ctx.fillStyle = '#020617';
-          ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-          // Water supply tank on left
-          ctx.fillStyle = '#0f172a';
-          ctx.fillRect(0, 40, 160, canvas.height - 80);
-          ctx.strokeStyle = '#38bdf8';
-          ctx.lineWidth = 3;
-          ctx.strokeRect(0, 40, 160, canvas.height - 80);
-
-          // Tank water fill
-          const tankGrad = ctx.createLinearGradient(0, 40, 0, canvas.height - 40);
-          tankGrad.addColorStop(0, '#0284c7');
-          tankGrad.addColorStop(1, '#0369a1');
-          ctx.fillStyle = tankGrad;
-          ctx.fillRect(2, 42, 156, canvas.height - 84);
-
-          ctx.fillStyle = '#ffffff';
-          ctx.font = 'bold 12px Inter';
-          ctx.textAlign = 'center';
-          ctx.fillText('Tanque / Globo', 80, 100);
-          ctx.font = '10px JetBrains Mono';
-          ctx.fillStyle = '#bae6fd';
-          ctx.fillText('Presión Constante', 80, 120);
-
-          // Nozzle orifice at (160, 210)
-          const nozY = 210;
-          const jetH = 26;
-
-          ctx.fillStyle = '#475569';
-          ctx.fillRect(155, nozY - jetH/2 - 6, 15, 6);
-          ctx.fillRect(155, nozY + jetH/2, 15, 6);
-
-          // Draw the Water Stream
-          const isDisturbed = (disturbanceTime > 0) || (reynolds > 3200);
-
-          if (!isDisturbed) {
-            // ULTRA LAMINAR: Perfectly glassy, stationary, parabolic cylindrical water rod
-            ctx.save();
-            // Glassy water gradient
-            const waterGrad = ctx.createLinearGradient(160, nozY - jetH/2, 160, nozY + jetH/2);
-            waterGrad.addColorStop(0, 'rgba(255, 255, 255, 0.9)');
-            waterGrad.addColorStop(0.3, 'rgba(56, 189, 248, 0.7)');
-            waterGrad.addColorStop(0.7, 'rgba(14, 165, 233, 0.85)');
-            waterGrad.addColorStop(1, 'rgba(255, 255, 255, 0.6)');
-            ctx.fillStyle = waterGrad;
-
-            ctx.beginPath();
-            ctx.moveTo(160, nozY - jetH/2);
-            for (let x = 160; x <= 650; x += 10) {
-              const dx = x - 160;
-              const drop = 0.0006 * dx * dx; // Parabolic gravity fall
-              ctx.lineTo(x, nozY - jetH/2 + drop);
-            }
-            for (let x = 650; x >= 160; x -= 10) {
-              const dx = x - 160;
-              const drop = 0.0006 * dx * dx;
-              ctx.lineTo(x, nozY + jetH/2 + drop);
-            }
-            ctx.closePath();
-            ctx.fill();
-
-            // Glass specular reflection line
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.85)';
-            ctx.lineWidth = 2.5;
-            ctx.beginPath();
-            for (let x = 160; x <= 650; x += 10) {
-              const dx = x - 160;
-              const drop = 0.0006 * dx * dx;
-              if (x === 160) ctx.moveTo(x, nozY - 4 + drop);
-              else ctx.lineTo(x, nozY - 4 + drop);
-            }
-            ctx.stroke();
-            ctx.restore();
-
-            // Badge annotation
-            ctx.fillStyle = '#2dd4bf';
-            ctx.font = 'bold 12px JetBrains Mono';
-            ctx.textAlign = 'center';
-            ctx.fillText('✨ Efecto "Agua Congelada": El agua parece un tubo sólido de cristal inmóvil', 420, 140);
-
-          } else {
-            // TURBULENT OR DISTURBED: Spray, ripples, chaotic droplets
-            ctx.save();
-            ctx.fillStyle = 'rgba(56, 189, 248, 0.7)';
-            ctx.beginPath();
-            ctx.moveTo(160, nozY - jetH/2);
-            for (let x = 160; x <= 650; x += 8) {
-              const dx = x - 160;
-              const drop = 0.0006 * dx * dx;
-              const wave = Math.sin(dx * 0.1 - simTime * 15) * (dx * 0.05);
-              ctx.lineTo(x, nozY - jetH/2 + drop + wave);
-            }
-            for (let x = 650; x >= 160; x -= 8) {
-              const dx = x - 160;
-              const drop = 0.0006 * dx * dx;
-              const wave = Math.cos(dx * 0.1 - simTime * 15) * (dx * 0.05);
-              ctx.lineTo(x, nozY + jetH/2 + drop + wave);
-            }
-            ctx.closePath();
-            ctx.fill();
-
-            // Droplet splatters
-            ctx.fillStyle = '#38bdf8';
-            for (let d = 0; d < 22; d++) {
-              const spX = 350 + Math.random() * 300;
-              const spY = nozY + 0.0006 * (spX - 160)**2 + (Math.random() * 40 - 20);
-              ctx.beginPath();
-              ctx.arc(spX, spY, Math.random() * 3 + 1, 0, Math.PI * 2);
-              ctx.fill();
-            }
-            ctx.restore();
-
-            ctx.fillStyle = '#f43f5e';
-            ctx.font = 'bold 12px JetBrains Mono';
-            ctx.textAlign = 'center';
-            ctx.fillText('💥 Flujo Turbulento: La perturbación desata gotas, caos y ruptura de capas', 420, 140);
-          }
-        }
-
+          ctx.fillStyle = p.color;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fill();
+        });
+        const wingGradient = ctx.createLinearGradient(wing.x, wing.y - 40, wing.x, wing.y + 40);
+        wingGradient.addColorStop(0, '#cbd5e1');
+        wingGradient.addColorStop(0.45, '#64748b');
+        wingGradient.addColorStop(1, '#1e293b');
+        airfoilPath();
+        ctx.fillStyle = wingGradient;
+        ctx.fill();
+        ctx.strokeStyle = '#e2e8f0';
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+        ctx.fillStyle = '#f8fafc';
+        ctx.font = 'bold 11px monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText('Perfil de ala / airfoil', wing.x + wing.chord / 2, wing.y + 4);
+        ctx.fillStyle = reynolds > 3500 ? '#f43f5e' : '#2dd4bf';
+        ctx.fillText(reynolds > 3500 ? 'Estela oscilante y separación' : 'Capas guiadas alrededor del ala', 520, 92);
         requestAnimationFrame(drawLaminarSimulation);
       }
-
       updateRegimeBadge(reynolds);
       requestAnimationFrame(drawLaminarSimulation);
     })();
